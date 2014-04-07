@@ -206,6 +206,14 @@ write.table(dat, file.path(dat.main, nameout), col.names = F,
 
 
 
+#create data file for imputation
+names <- "1"
+for(i in 1 : 5) {
+	for(j in 1 : 5) {
+		names <- c(names, paste0("stdimpute", i, j, ".dat"))
+	}
+}
+cat(names[-1], sep = "\n", file = file.path(dat.main, "stdimpute.dat"))
 
 
 
