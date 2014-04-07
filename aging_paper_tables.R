@@ -1,77 +1,64 @@
 ######
 # function to create tables in CLAR WHAS paper
 
-tmt.dir <- "/Users/jennakrall/Dropbox/Aging/newimpute_4jul12/time2/"
-hvl.dir <- "/Users/jennakrall/Dropbox/Aging/hvl_21aug12/"
 
-load("/Users/jennakrall/Dropbox/Aging/datasets/sds_8apr13.RData")
 
-source('~/Dropbox/Aging/rcode/parsing_mplus_files.R', chdir = F)
-# sppb_traila_trailb_time_hvlr_21aug12.out
-# sppb_traila_trailb_time_14jul12.out
-load("/Users/jennakrall/Dropbox/Aging/datasets/sds_8apr13.RData")
+#what are these	
+	# #??
 
-getests <- function(name, typex, typey, rat = 1) {
-	par <- extractModelParameters(name)
-	parcheck <- fixdat(par, std = FALSE)
-	
-	typexs <- substr(parcheck$param, 1, 2)
-	typeys <- substr(parcheck$var, 1, 2)
-	onw <- parcheck$onw
-	
-	wh <- which(typexs == typex & 
-		typeys == typey & onw == "ON")
-		
-	pars <- parcheck[wh, ]
-	parmat <- matrix(nrow = nrow(pars), ncol = 3)
-	parmat <- data.frame(parmat)
-	# parmat[,2] <- paste(pars$param, pars$var)
-	parmat[,1] <- round(pars$est, 2)
-	
-	#CONFIDENCE INTERVAL
-	rnd <- 10
-	lb <- round(pars$est - 2 * pars$se, 10) * rat
-	ub <- round(pars$est + 2 * pars$se, 10) * rat
-	out2 <- data.frame(paste(round(pars$est * rat, 10 ),
-		" (", lb, ", ", ub, ")", sep = ""))
-		
-	whrow <- which(lb >= 0 | ub <= 0)
-	if(length(whrow) >  0) {
-
-		for(j in 1 : length(whrow)) {
-			print(paste0("X=", typex, ", Y=", typey, 
-				", ci=", out2[whrow[j], ]))
-		}
-	}	
-	
-	# #SE ONLY
-	se <- round(pars$se * rat, 2)
-	out <- data.frame(paste(round(pars$est * rat, 2),
-		 " (", se, ")", sep = ""))
-	
-	list(rev(t(out)), out2)
-}
+# nameMMSESPc <- file.path(hvl.dir, "sppb_mmse_censor_9apr13.out")
+# nameMMSEWSc <- file.path(hvl.dir, "ws_mmse_censor_9apr13.out")	
 
 
 
-nameTBSP <- file.path(tmt.dir, "sppb_traila_trailb_time_14jul12.out")
-nameTBWS <- file.path(tmt.dir, "ws_traila_trailb_time_14jul12.out")
-nameHVLRSP <- file.path(hvl.dir, "sppb_traila_trailb_time_hvlr_21aug12.out")
-nameHVLRWS <- file.path(hvl.dir, "ws_traila_trailb_time_hvlr_21aug12.out")
-nameSQHVLDELSP <- file.path(hvl.dir, 
-	"sppb_traila_trailb_time_sqhvldel_8oct12.out")
-nameSQHVLDELWS <- file.path(hvl.dir, 
-	"ws_traila_trailb_time_sqhvldel_8oct12.out")
+
+#set working directories
+age.dir <- "/Users/jennakrall/Dropbox/Aging/"
+code.dir <- file.path(age.dir, "aging_code")
+mod.dir <- file.path(age.dir, "final_models")
 
 
-CnameTBSP <- file.path(tmt.dir, "sppb_traila_trailb_time_constrain_16apr13.out")
-CnameTBWS <- file.path(tmt.dir, "ws_traila_trailb_time_constrain_16apr13.out")
-CnameHVLRSP <- file.path(hvl.dir, "sppb_hvlr_constrain_16apr13.out")
-CnameHVLRWS <- file.path(hvl.dir, "ws_hvlr_constrain_16apr13.out")
-CnameSQHVLDELSP <- file.path(hvl.dir, 
-	"sppb_sqhvldel_constrain_16apr13.out")
-CnameSQHVLDELWS <- file.path(hvl.dir, 
-	"ws_sqhvldel_constrain_16apr13.out")
+
+#source necessary code
+source(file.path(code.dir, "parsing_mplus_files.R"))
+source(file.path(code.dir, "aging_table_fn.R"))
+
+
+
+
+#load standard deviations
+load(file.path(age.dir, "datasets/sds_8apr13.RData"))
+
+
+
+#unconstrained models
+# add these
+nameTBSP <- file.path(mod.dir, "unconstrain/sppb_tmtb_uncon.out")
+nameTBWS <- file.path(mod.dir, "unconstrain/ws_tmtb_uncon.out")
+nameHVLRSP <- file.path(mod.dir, "unconstrain/sppb_hvlr_uncon.out")
+nameHVLRWS <- file.path(mod.dir, "unconstrain/ws_hvlr_uncon.out")
+nameSQHVLDELSP <- file.path(mod.dir, "unconstrain/sppb_sqhvldel_uncon.out")
+nameSQHVLDELWS <- file.path(mod.dir, "unconstrain/ws_sqhvldel_uncon.out")
+nameMMSESP <- file.path(mod.dir, "unconstrain/sppb_mmse_uncon.out")
+nameMMSEWS <- file.path(mod.dir, "unconstrain/ws_mmse_uncon.out")
+
+
+#constrained models
+CnameTBSP <- file.path(mod.dir, "sppb_tmtb.out")
+CnameTBWS <- file.path(mod.dir, "ws_tmtb.out")
+CnameHVLRSP <- file.path(mod.dir, "sppb_hvlr.out")
+CnameHVLRWS <- file.path(mod.dir, "ws_hvlr.out")
+CnameSQHVLDELSP <- file.path(mod.dir, "sppb_sqhvldel.out")
+CnameSQHVLDELWS <- file.path(mod.dir, "ws_sqhvldel.out")
+CnameMMSESP <- file.path(hvl.dir, "sppb_mmse.out")
+CnameMMSEWS <- file.path(hvl.dir, "ws_mmse.out")
+
+
+
+
+
+
+
 	
 	
 #phys to cog	
@@ -81,6 +68,9 @@ getests(CnameHVLRSP, "SP", "HV")
 getests(CnameHVLRWS, "WS", "HV")	
 getests(CnameSQHVLDELSP, "SP", "HV")	
 getests(CnameSQHVLDELWS, "WS", "HV")	
+getests(CnameMMSESP, "SP", "MM")
+getests(CnameMMSEWS, "WS", "MM")
+
 
 #cog to phys
 getests(CnameTBSP, "TB", "SP")	
@@ -89,167 +79,52 @@ getests(CnameHVLRSP, "HV", "SP")
 getests(CnameHVLRWS, "HV", "WS")	
 getests(CnameSQHVLDELSP, "HV", "SP")	
 getests(CnameSQHVLDELWS, "HV", "WS")	
-
-
-	
-nameMMSESP <- file.path(hvl.dir, "sppb_mmse_9apr13.out")
-nameMMSEWS <- file.path(hvl.dir, "ws_mmse_9apr13.out")
-nameMMSESPc <- file.path(hvl.dir, "sppb_mmse_censor_9apr13.out")
-nameMMSEWSc <- file.path(hvl.dir, "ws_mmse_censor_9apr13.out")	
-
-CnameMMSESP <- file.path(hvl.dir, "sppb_mmse_constrain_17apr13.out")
-CnameMMSEWS <- file.path(hvl.dir, "ws_mmse_constrain_17apr13.out")
-
-getests(CnameMMSESP, "SP", "MM")
-getests(CnameMMSEWS, "WS", "MM")
 getests(CnameMMSEWS,  "MM", "WS")
 getests(CnameMMSESP, "MM", "SP")
 
-getests(nameTBSP, "SP", "TB")
+
+
+
+
+
+
+
+
+
+
+
+
 
 ####################
 #create pred phys table
-incbreaks <- function(out1f) {
-	blank <- ""
-	c(out1f[1:2], blank, out1f[3:4])
-}
-
-makedf <- function (name1, x1, y1, name2, x2, y2,
-	name3, x3, y3, type = "no", rats = c(1, 1, 1)) {
-		
-		
-	out1a <- getests(name1, x1, y1, rat = rats[1])
-	out1b <-  getests(name2, x2, y2, rat = rats[2])
-	out1c <- getests(name3, x3, y3, rat = rats[3])
-	
-	if(type == "SP") {
-		out1 <- data.frame(rbind(incbreaks(out1a[[1]]), 
-			incbreaks(out1b[[1]]), incbreaks(out1c[[1]])))
-	}else{
-		out1 <- data.frame(rbind(out1a[[1]], 
-			out1b[[1]], out1c[[1]]))
-		}
-	rownames(out1) <- NULL
-	
-	list(out1, list(out1a[[2]], out1b[[2]], out1c[[2]]))
-}
-
-
-# listnames[[1]] is x1 y1
-# listnames[[2]] is x1 y2
-# listnames[[3]] is x2 y1
-# listnames[[4]] is x2 y2
-tabfun <- function(listnames, x1, x2, x3, y1, y2, rats) {
-	
-	
-	#ALL CL for WS
-	#tb -> ws, hvlr -> ws, sqhvldel -> ws
-	out1 <- makedf(listnames[[1]], x1, y1, 
-		listnames[[3]], x2, y1,
-		listnames[[5]], x3, y1, rats = rats[1:3])
-	#ALL CL for SPPB
-	#tb -> sppb, hvlr -> sppb, sqhvldel -> sppb
-	out2 <- makedf(listnames[[2]], x1, y2, 
-		listnames[[4]], x2, y2,
-		listnames[[6]], x3, y2, type = "SP", rats = rats[4:6])
-	#ALL AR for WS
-	#tb -> ws, hvlr -> ws, sqhvldel -> ws
-	out3 <- makedf(listnames[[1]], y1, y1, 
-		listnames[[3]], y1, y1,
-		listnames[[5]], y1, y1)
-	#ALL AR for SPPB
-	#tb -> sppb, hvlr -> sppb, sqhvldel -> sppb
-	out4 <- makedf(listnames[[2]], y2, y2, 
-		listnames[[4]], y2, y2,
-		listnames[[6]], y2, y2, type = "SP")
-
-
-	list(data.frame(rbind(out1[[1]], out2[[1]], out3[[1]], out4[[1]])),
-		list(out1[[2]], out2[[2]], out3[[2]], out4[[2]]))
-	
-}
 
 listnames1 <- list(nameTBWS, nameTBSP, nameHVLRWS, nameHVLRSP, 
 	nameSQHVLDELWS, nameSQHVLDELSP)
 # rats <- rep(sds[c("TB", "HVLr", "SQHVLdel")], 2)/rep(sds[c("WS", "SP")], each = 3)r
 # outPHYS <- tabfun(listnames1, "TB", "HV","HV", "WS", "SP", rats)
 rats2 <- rep(1, 6)
-outPHYS <- tabfun(listnames1, "TB", "HV","HV", "WS", "SP", rats2)
+outPHYS <- tabfunP(listnames1, "TB", "HV","HV", "WS", "SP", rats2)
 
 
 
 
 
-
-
-
-
-#####MAKE COGNITIVE TABLE
-
-makedf <- function (name1, x1, y1, name2, x2, y2, type = "no", rats = c(1,1)) {
-	out1a <- getests(name1, x1, y1, rat = rats[1])
-	out1b2 <-  getests(name2, x2, y2, rat = rats[2])
-	
-	blank <- ""
-	out1b <-  c(out1b2[[1]][1:2], blank, out1b2[[1]][3:4])
-	
-
-	out1 <-rbind(out1a[[1]], out1b)
-		
-	rownames(out1) <- NULL
-	
-	list(out1, list(out1a[[2]], out1b2[[2]]))
-}
-
-
-# listnames[[1]] is x1 y1
-# listnames[[2]] is x1 y2
-# listnames[[3]] is x2 y1
-# listnames[[4]] is x2 y2
-tabfun <- function(listnames, x1, x2, y1, y2, y3, rats) {
-	
-	#all cl for tb
-	#ws -> tb, sppb-> tb
-	out1 <- makedf(listnames[[1]], x1, y1, 
-		listnames[[3]], x2, y1, rats = rats[1:2])
-	#all cl for hvlimm
-	#ws -> hvlr, sppb-> hvlr
-	out2 <- makedf(listnames[[2]], x1, y2, 
-		listnames[[4]], x2, y2, rats = rats[3:4])	
-	#all cl for hvldel
-	#ws -> hvldel, sppb-> hvldel
-	out3 <- makedf(listnames[[5]], x1, y3, 
-		listnames[[6]], x2, y3, rats = rats[5:6])	
-		
-	#allAR for tb	
-	#ws -> tb, sppb-> tb
-	out4 <- makedf(listnames[[1]], y1, y1, 
-		listnames[[3]], y1, y1)
-	#all AR for hvlimm
-	#ws -> hvlr, sppb-> hvlr
-	out5 <- makedf(listnames[[2]], y2, y2, 
-		listnames[[4]], y2, y2)	
-	#all AR for hvldel
-	#ws -> hvldel, sppb-> hvldel
-	out6 <- makedf(listnames[[5]], y3, y3, 
-		listnames[[6]], y3, y3)	
-
-
-	list(data.frame(rbind(out1[[1]], out2[[1]], out3[[1]], 
-		out4[[1]], out5[[1]], out6[[1]])),
-		list(out1[[2]], out2[[2]], out3[[2]], 
-		out4[[2]], out5[[2]], out6[[2]]))
-	
-}
+####################
+#create pred cog table
 
 listnames1 <- list(nameTBWS, nameHVLRWS, nameTBSP, nameHVLRSP,
 	nameSQHVLDELWS, nameSQHVLDELSP)
 # rats <- rep(sds[c("WS", "SP")], each = 3)/rep(sds[c("TB", "HVLr", "SQHVLdel")], 2)	
 
-outCOG <- tabfun(listnames1, "WS", "SP", "TB", "HV", "HV" , rats2)
+outCOG <- tabfunC(listnames1, "WS", "SP", "TB", "HV", "HV" , rats2)
 
 
 
+
+
+
+#####
+# Format output
 cogs <- c("TMT-B", "HVL-imm","HVL-del")
 phys <- c("WS", "SPPB")
 
@@ -268,6 +143,10 @@ visits <- c("", "", visits)
 colnames(outCOG2) <- visits
 colnames(outPHYS2) <- visits
 
+
+
+
+#get AR/CL
 #cl
 xtable(outPHYS2[1:6,])
 #ar
@@ -276,8 +155,8 @@ xtable(outPHYS2[7:12,])
 xtable(outCOG2[1:6,])
 #ar
 xtable(outCOG2[7:12,])
-write.csv(outCOG2, file = "outCOG_9apr13.csv")
-write.csv(outPHYS2, file = "outPHYS_9apr13.csv")
+# write.csv(outCOG2, file = "outCOG_9apr13.csv")
+# write.csv(outPHYS2, file = "outPHYS_9apr13.csv")
 
 
 
@@ -381,51 +260,6 @@ for(i in 1 : 4) {
 	# nameSQHVLDELWS, nameSQHVLDELSP
 	
 	
-getLRTpval <- function(name1, fp2, name2, type = "no") {
-	par1 <- extractModelSummaries(name1)
-	#par1 <- readModels(name1)
-	name2 <- file.path(fp2, name2)
-	par2 <- extractModelSummaries(name2)
-	#par2 <- readModels(name2)
-	#compareModels(par1, par2, show = "summaries")
-	if(type == "impute") {
-		llnull <- par2$LL_Mean
-		llalt <- par1$LL_Mean
-		c0 <- 1
-		c1 <- 1
-		
-	}else{
-		
-		llnull <- par2$LL
-		llalt <- par1$LL
-		c0 <- par2$LLCorr
-		c1 <- par1$LLCorr
-	}
-	# dfs <- par1$Param-par2$Param
-	p1 <- par1$Param
-	p0 <- par2$Param
-	
-	cd <- (p0 * c0 - p1 * c1)/(p0 - p1)
-	
-	teststat <- -2*(llnull - llalt) / cd
-	
-	round(1- pchisq(-2*llnull +2 * llalt, df = p1 - p0), 4)
-}	
-
-getall <- function(name1, fp2, pref2, suff2, cog, phys, typeimp = "no") {
-	pvals <- vector(, length = 4)
-	
-	types <- paste(rep(c("CL", "AR"), each = 2), 
-		rep(c(cog, phys), 2), sep = "")
-		
-	for	(i in 1 : 4) {
-		name2 <- paste(pref2, types[i], suff2, sep = "")
-		pvals[i] <- getLRTpval(name1, fp2, name2, typeimp)
-	}
-	names(pvals) <- types
-	pvals
-}
-
 # getLRTpval(nameTBWS, tmt.dir, "WS_tmtb_testtrend_ARTB_18dec12.out")
 
 #HVL-imm and WS
