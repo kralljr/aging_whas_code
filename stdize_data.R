@@ -1,5 +1,7 @@
 #####
 # File to standardize main data and imputed data
+library(foreign)
+
 
 
 olddat <- read.table("~/Dropbox/Aging/final_models/data/olddat/std_hvl_alllcovar_19jan13.dat", na.strings = "999")
@@ -218,6 +220,14 @@ cat(names[-1], sep = "\n", file = file.path(dat.main, "stdimpute.dat"))
 
 
 
+#create data file for ENDO imputation
+names <- "1"
+for(i in 1 : 5) {
+	for(j in 1 : 5) {
+		names <- c(names, paste0("stdimputeendo", i, j, ".dat"))
+	}
+}
+cat(names[-1], sep = "\n", file = file.path(dat.main, "stdimputeendo.dat"))
 
 
 
