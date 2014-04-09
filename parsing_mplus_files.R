@@ -5,7 +5,20 @@
 library(MplusAutomation)
 
 
-
+createDIR <- function(dir, suffix, phys = physv, 
+	cog = cogv) {
+		
+	dirs <- vector(, length = length(phys) * length(cog))
+	k <- 1
+	for(i in 1 : length(phys)) {
+		for(j in 1 : length(cog)) {
+			dirs[k] <- file.path(dir, paste0(phys[i], 
+				cog[j], suffix, ".out"))
+			k <- k + 1
+		}
+	}
+	dirs
+}
 
 
 getgrowth <- function(name1){
