@@ -7,7 +7,7 @@ library(MplusAutomation)
 
 # cns <- c('imp1', 'imp2', 'baseid', 'ws1', 'ws2', 'ws3', 'ws4', 'ws5', 'ws6', 'trailb1', 'trailb2', 'trailb3', 'trailb4', 'trailb5', 'trailb6', 'traila1', 'traila2', 'traila3', 'traila4', 'traila5', 'traila6', 'hvlr1', 'hvlr2', 'hvlr3', 'hvlr4', 'hvlr5', 'hvlr6', 'hvldel1', 'hvldel2', 'hvldel3', 'hvldel4', 'hvldel5', 'hvldel6', 'age', 'health', 'race', 'ed', 'sppb1', 'sppb2', 'sppb3', 'sppb5', 'sppb6', 'disease', 'gds', 'gdsc', 'vision', 'death', 'rmvis', 'time2', 'time3', 'time4', 'time5', 'time6', 'mmse1', 'mmse2', 'mmse3', 'mmse4', 'mmse5', 'mmse6')
 
-cns <- list(c('baseid', 'ws1-ws6'), c('trailb1-trailb6', 'traila1-traila6'), c('hvlr1-hvlr6', 'shvldel1-shvldel6'), c('age', 'health', 'race', 'ed'), c('sppb1', 'sppb2', 'sppb3', 'sppb5', 'sppb6'), c('disease', 'gds', 'gdsc'), c('vision', 'death', 'rmvis'), c('time2-time6', 'mmse1-mmse6'))
+cns <- list(c('baseid', 'ws1-ws6'), c('tb1-tb6', 'ta1-ta6'), c('hvlr1-hvlr6', 'shvldel1-shvldel6'), c('age', 'health', 'race', 'ed'), c('sppb1', 'sppb2', 'sppb3', 'sppb5', 'sppb6'), c('disease', 'gds', 'gdsc'), c('vision', 'death', 'rmvis'), c('time2-time6', 'mmse1-mmse6'))
 
 
 
@@ -32,21 +32,22 @@ outMod <- function(homedir, outfile1, datafiles,
 	colnames = cns, 
 	centervar = NULL, 
 	missvar = NULL, 
-	missval = 999, constraint = NULL, test = NULL) {
+	missval = 999, constraint = NULL, test = NULL,
+	censor = NULL, resid = F, lags = 1) {
 	
 	if(is.null(physall) | is.null(cogall)) {
 		physall <- c("ws", "sppb")
-		cogall <- c("trailb", "mmse", "hvlr", "shvldel")
+		cogall <- c("tb", "mmse", "hvlr", "shvldel")
 	}
 	
-	
+
 	#for all phys
 	for(i in 1 : length(physall)) {
 		#for all cog
 		for(j in 1 : length(cogall)) {
 			print(cogall[j])
 			#specify datafile
-			if(cogall[j] == "trailb") {
+			if(cogall[j] == "tb") {
 				datafile1 <- datafiles[1]
 			}else{
 				datafile1 <- datafiles[2]
@@ -60,7 +61,8 @@ outMod <- function(homedir, outfile1, datafiles,
 			#create input file
 			createMod(outfile, physall[i], cogall[j], datafile1, 
 				colnames, centervar, missvar, 
-				missval, constraint, test)
+				missval, constraint, test, censor, resid,
+				lags)
 		}
 	}
 	
@@ -91,7 +93,8 @@ createMod <- function(outfile, physv, cogv, datafile,
 	colnames = cns, 
 	centervar = NULL, 
 	missvar = NULL, 
-	missval = 999, constraint = NULL, test = NULL) {
+	missval = 999, constraint = NULL, test = NULL, censor = NULL,
+	resid = F, lags = 1) {
 	
 	
 	#get sequence information
@@ -99,25 +102,25 @@ createMod <- function(outfile, physv, cogv, datafile,
 	if(physv == "sppb") {seqs <- c(1, 2, 3, 5, 6)}
 	
 	#specify title
-	title <- paste0("CLAR ", physv, " ", cogv, ", con ", constraint,
-		", test ", test)
+	title <- paste0("CLAR ", physv, " ", cogv, ", con ")
 		
 		
 	#get centering variables	
 	if(is.null(centervar)) {
-		centervar <- list(c("age", "ed"), "disease")
+		centervar <- list(c("age", "ed", "gds"), c("disease")) 
+			#"disease")
 		centervar[[3]] <- paste0("time", seqs[-1])
 		
-		if(cogv == "trailb") {
-			centervar[[2]] <- c(centervar[[2]], paste0("traila", seqs))
+		if(cogv == "tb") {
+			centervar[[2]] <- c(centervar[[2]], paste0("ta", seqs))
 		}
 	}
 	
 	
 	#get missing variables
 	if(is.null(missvar)) {
-		missvar <- list(c("ws1-ws6", "trailb1-trailb6", 
-			"traila1-traila6"),
+		missvar <- list(c("ws1-ws6", "tb1-tb6", 
+			"ta1-ta6"),
 			c("hvlr1-hvlr6", "shvldel1-shvldel6"), 
 			paste0("sppb", c(1, 2, 3, 5, 6)), c("gds", "gdsc", 
 			"death", "mmse1-mmse6"))
@@ -128,9 +131,13 @@ createMod <- function(outfile, physv, cogv, datafile,
 	usenames <- list(c(paste0(physv, seqs)), 
 		c(paste0(cogv, seqs)),
 		c(paste0("time", seqs[-1])),
-		c("age", "race", "ed"), c("disease", "gdsc", "vision"))
-	if(cogv == "trailb") {
-		ta <- paste0("traila", seqs)
+		c( "race", "ed", "disease"),
+		# c( "race", "ed"), 
+		c("age", "gds", "vision"))	
+		# c("age", "gds"))
+		# c("age"))
+	if(cogv == "tb") {
+		ta <- paste0("ta", seqs)
 		usenames[[6]] <- ta
 		
 		#fix variables
@@ -140,10 +147,10 @@ createMod <- function(outfile, physv, cogv, datafile,
 	
 	#concatenate beginning info
 	catinfo(cogv, title, outfile, datafile, colnames, 
-		usenames, centervar, missvar, missval)
+		usenames, centervar, missvar, missval, censor)
 
 	#get model info	
-	getARCL(physv, cogv, outfile, seqs)
+	getARCL(physv, cogv, outfile, seqs, censor, resid, lags)
 	
 	
 	#test
@@ -153,7 +160,7 @@ createMod <- function(outfile, physv, cogv, datafile,
 	
 	#constraints
 	if(!is.null(constraint)) {
-		constrainARCL(constraint, seqs, outfile)
+		constrainARCL(constraint, seqs, outfile, lags)
 	}
 	
 	#output
@@ -172,18 +179,47 @@ createMod <- function(outfile, physv, cogv, datafile,
 # constraint is one of "arp", "arc", "clp", "clc"
 # seqs is either seq(1, 6) or c(1, 2, 3, 5, 6)
 # outfile is outfile name
-constrainARCL <- function(constraint, seqs, outfile) {
+constrainARCL <- function(constraint, seqs, outfile, lags = 1) {
 	
 	#model constraint row
 	cat("\n", "MODEL CONSTRAINT:", file = outfile, 
 		sep = "", append = T)
 		
-	#create constraints for each pair	
-	for(i in 2 : (length(seqs) - 1)) {
-		ttk <- paste0(constraint, seqs[i])
-		ttk1 <- paste0(constraint, seqs[i + 1]	)
-		cat("\n\t", paste0(ttk, "=", ttk1, ";"), file = outfile, 
-			sep = "", append = T)
+	
+	#for each constraints
+	n <- length(constraint)
+	if(constraint[n] == "cl") {
+		n <- n - 1
+		ttk <- paste0(constraint[1], 2)
+		ttk1 <- paste0(constraint[2], 2)
+		cat("\n\t NEW(c*0);", file = outfile, 
+				sep = "", append = T)		
+		cat("\n\t", paste0(ttk, "=", ttk1, " + c;"), file = outfile, 
+				sep = "", append = T)		
+		# cat("\n\t", paste0(ttk, "=", ttk1, ";"), file = outfile, 
+				# sep = "", append = T)
+	}
+	
+	for(j in 1 : n) {
+		#create constraints for each pair	
+		for(i in 2 : (length(seqs) - 1)) {
+			ttk <- paste0(constraint[j], seqs[i])
+			ttk1 <- paste0(constraint[j], seqs[i + 1]	)
+			cat("\n\t", paste0(ttk, "=", ttk1, ";"), file = outfile, 
+				sep = "", append = T)
+		}
+	}
+
+	if(lags != 1) {
+		for(j in 1 : n) {
+			#create constraints for each pair	
+			for(i in 3 : (length(seqs) - 1)) {
+				ttk <- paste0(constraint[j], "2", seqs[i])
+				ttk1 <- paste0(constraint[j], "2", seqs[i + 1]	)
+				cat("\n\t", paste0(ttk, "=", ttk1, ";"), file = outfile, 
+					sep = "", append = T)
+		}
+	}
 	}
 }
 
@@ -202,7 +238,7 @@ constrainARCL <- function(constraint, seqs, outfile) {
 # centervar is variables to center
 # missvar is variables with missing values
 catinfo <- function(cogv, title, outfile, datafile, cns, 
-	usenames, centervar, missvar, missval = 999) {
+	usenames, centervar, missvar, missval = 999, censor = NULL) {
 		
 	#specify title
 	cat("TITLE:", title, file = outfile, 
@@ -215,7 +251,7 @@ catinfo <- function(cogv, title, outfile, datafile, cns,
 
 
 	#if TMT-B, then imputation
-	if(cogv == "trailb") {
+	if(cogv == "tb") {
 		cat("\n\tTYPE= IMPUTATION;", file = outfile, 
 			sep = " ", append = T)
 	}
@@ -272,14 +308,31 @@ catinfo <- function(cogv, title, outfile, datafile, cns,
 		paste0("(", missval, ")"), ";", file = outfile, 
 		sep = " ", append = T)
 
+
+	if(!is.null(censor)) {
+		cat("\n\tCENSORED ARE ", paste(censor, collapse = " "), 
+			file = outfile, 
+			sep = " ", append = T)
+	}
 	
 	l1 <-  "\nANALYSIS: \t ESTIMATOR = mlr;"
-	
 	l2 <- "MODEL:"
 	
-	cat(c(l1, l2), file = outfile, 
-		sep = "\n", append = T)
 	
+	if(!is.null(censor)) {
+		l1b <- "\nINTEGRATION = MONTECARLO;"
+		cat(c(l1, l1b, l2), file = outfile, 
+			sep = "\n", append = T)
+	}else{
+		cat(c(l1, l2), file = outfile, 
+			sep = "\n", append = T)
+
+		
+		}
+	
+
+	
+		
 }
 
 
@@ -291,7 +344,7 @@ catinfo <- function(cogv, title, outfile, datafile, cns,
 
 #################################
 #### FUNCTION TO ADD MODEL TEST
-# testtype is one of "arp", "arc", "clp", "clc"
+# testtype is vector of "arp", "arc", "clp", "clc"
 # seqs is either seq(1, 6) or c(1, 2, 3, 5, 6)
 # outfile is outfile name
 testARCL <- function(testtype, seqs, outfile) {
@@ -300,12 +353,15 @@ testARCL <- function(testtype, seqs, outfile) {
 	cat("MODEL TEST:", file = outfile, 
 		sep = "", append = T)
 		
-	#test for each pair (global)
-	for(i in 2 : (length(seqs) - 1)) {
-		ttk <- paste0(testtype, seqs[i])
-		ttk1 <- paste0(testtype, seqs[i + 1]	)
-		cat("\n\t", paste0(ttk, "=", ttk1, ";"), file = outfile, 
-			sep = "", append = T)
+	#for each constraint
+	for(j in 1 : length(testtype)) {
+		#test for each pair (global)
+		for(i in 2 : (length(seqs) - 1)) {
+			ttk <- paste0(testtype[j], seqs[i])
+			ttk1 <- paste0(testtype[j], seqs[i + 1]	)
+			cat("\n\t", paste0(ttk, "=", ttk1, ";"), file = outfile, 
+				sep = "", append = T)
+		}
 	}
 	
 }
@@ -321,7 +377,10 @@ testARCL <- function(testtype, seqs, outfile) {
 #cogv is either "hvlr", "trailb", "shvldel", "mmse"
 #outfile is outfile name
 # seqs is either seq(1, 6) or c(1, 2, 3, 5, 6)
-getARCL <- function(physvar, cogv, outfile, seqs) {
+getARCL <- function(physvar, cogv, outfile, seqs, 
+	censor = NULL, resid = F, lags = 1) {
+		
+		
 	for(k in 1 : length(seqs)) {
 		
 		
@@ -334,21 +393,24 @@ getARCL <- function(physvar, cogv, outfile, seqs) {
 		
 		#get covariate effects
 		p1 <- paste("\t", phys, "on",  "ed", "age", "race", 
-			"vision", "gdsc", "disease")
+			"vision", "gds", "disease")
 		c1 <- paste(cog, "on",  "ed", "age", "race", 
-			"vision", "gdsc", "disease")
+			"vision", "gds", "disease")
 			
 			
 		#add in TMT-A for TMT-B	
-		if(cogv == "trailb") {
-			c1 <- paste(c1, paste0("traila", i))
-			p1 <- paste(p1, paste0("traila", i))
+		if(cogv == "tb") {
+			c1 <- paste(c1, paste0("ta", i))
+			p1 <- paste(p1, paste0("ta", i))
 			
 		}
 		
 		#Add correlation at each time
-		cor1 <- paste0(phys, " with ", cog, ";")
-		
+		if(is.null(censor)) {
+			cor1 <- paste0(phys, " with ", cog, ";")
+		}else{
+			cor1 <- ""
+			}
 		
 		#Get CL/AR effects 
 		if(i != 1) {
@@ -371,11 +433,46 @@ getARCL <- function(physvar, cogv, outfile, seqs) {
 				" (", "arp", i, ");")
 			arc <- paste0(cog, " on ", pcog, 
 				" (", "arc", i, ");")
+					
 				
 			#add to file
 			cat(c(clp, clc, arp, arc), 
 				file = outfile, 
-				sep = "\n\t", append = T)	
+				sep = "\n\t", append = T)
+				
+			if(lags != 1 & k > 2) {
+				pphys2 <- paste0(physvar, seqs[k - 2])
+				pcog2 <- paste0(cogv, seqs[k - 2])
+				
+							#specify CL/AR effects
+				clp2 <- paste0(phys, " on ", pcog2, 
+					" (", "clp2", i, ");")
+				clc2 <- paste0(cog, " on ", pphys2, 
+					" (", "clc2", i, ");")
+				arp2 <- paste0(phys, " on ", pphys2, 
+					" (", "arp2", i, ");")
+				arc2 <- paste0(cog, " on ", pcog2, 
+					" (", "arc2", i, ");")
+					
+				#add to file
+				cat(c(clp2, clc2, arp2, arc2), 
+					file = outfile, 
+					sep = "\n\t", append = T)	
+					
+				
+			}	
+				
+			if(resid == T)	{
+				corp <- paste(cog, "with", pcog, ";")
+				cat("\n", corp, 
+					file = outfile, 
+					sep = "\n\t", append = T)
+				corc <- paste(phys, "with", pphys, ";")
+				cat("\n", corc, 
+					file = outfile, 
+					sep = "\n\t", append = T)				
+					
+			}
 		}
 		
 		#end p1/c1
