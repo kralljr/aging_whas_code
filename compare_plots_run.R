@@ -5,6 +5,7 @@
 
 
 age.dir <- "/Users/jennakrall/Dropbox/Aging/"
+save.dir <- "~/Dropbox/Aging/proposal/writeup/AJE_review1/"
 code.dir <- file.path(age.dir, "aging_code")
 mod.dir <- file.path(age.dir, "final_models")
 outfile <- file.path(mod.dir, "runfiles")
@@ -184,7 +185,15 @@ for(i in 1 : length(CL)) {
 }
 
 
+cogs <- rep(c("TMT-B", "HVL-R", "(HVL-del)^2", "MMSE"), 2)
+physs <- rep(c("WS", "SPPB"), each = 4)
 
+
+ci <- paste0("(", round(cs[, c(4)], 2), ", ", round(cs[, 5], 2), ")")
+out <- data.frame(cogs, physs, round(cs[, 1], 2),ci,  round(pv, 2))
+colnames(out) <- c("Cognitive fn", "Physical fn", "Estimate", "CI", "LRT p-value")
+
+write.csv(out, file = file.path(save.dir, "cl_diff.csv"), row.names = F)
 
 
 
