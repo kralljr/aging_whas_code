@@ -85,6 +85,21 @@ graphics.off()
 
 
 
+#check residual correlations
+for(i in 1 : 8) {
+	par <- extractModelParameters(vision[i])[[1]]
+	ss <- sapply(strsplit(par[, 1], "\\."), function(x) x[2])
+	par <- par[which(ss == "WITH"), ]
+	if(i == 1) {
+		out <- par
+	}else{
+		out <- rbind(out, par)
+		
+	}
+}
+
+
+
 
 
 #compare covariates age/ed/race/disease/gds/(TA)/vision (binary)
