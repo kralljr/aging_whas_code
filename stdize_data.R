@@ -42,7 +42,8 @@ for(l in 1 : 2) {
 			dat <- read.table(file.path(dat.dir[1], 
 				paste0(names[1], i, j, ".dat")) , na.strings = 999)
 			colnames(dat) <- cns
-			
+			wh1 <- which(is.na(dat$gdsc))
+			print(dat[wh1, c("gdsc", "gds")])
 			
 			
 			#only use TMT-A from imputation with multiple outcomes
@@ -50,8 +51,10 @@ for(l in 1 : 2) {
 				dat2 <- read.table(file.path(dat.dir[2], 
 					paste0(names[2], i, j, ".dat")) , na.strings = 999)
 				colnames(dat2) <- cns
-				dat2 <- dat2[, c("baseid", paste0("traila", seq(1, 6)))]
-				dat <- dat[, -which(substr(colnames(dat), 1, 6) == "traila")]
+				dat2 <- dat2[, c("baseid", paste0("traila", seq(1, 6)), "gds")]
+
+				dat <- dat[, -which(substr(colnames(dat), 1, 6) == "traila"  |
+					colnames(dat) == "gds")]
 				
 				dat <- merge(dat, dat2, by = "baseid")	
 			} 	
@@ -62,7 +65,7 @@ for(l in 1 : 2) {
 			for(k in 1 : length(start.names)) {
 				#get mean, sd from first
 				name1 <- paste0(start.names[k], "1")
-				print(c(name1, l, i, j))
+				# print(c(name1, l, i, j))
 				
 				
 				dat1 <- dat[, name1]
@@ -92,8 +95,8 @@ for(l in 1 : 2) {
 						if(k == 6) {
 							namek2 <- paste0("sqhvldel", len)
 						}
-						print(all.equal(dat[, which(colnames(dat) == namek)], 
-							olddat[, which(colnames(olddat) == namek2)]))
+						# print(all.equal(dat[, which(colnames(dat) == namek)], 
+							# olddat[, which(colnames(olddat) == namek2)]))
 					}
 				}		
 			}
@@ -106,7 +109,7 @@ for(l in 1 : 2) {
 			nameout <- paste0("std", names[l], i, j, ".dat")
 			dat <- dat[, cns]
 			
-			print(nameout)
+			# print(nameout)
 			
 			 write.table(dat, file.path(dat.dir[l], nameout), col.names = F,
 				 row.names = F, na = "999")
@@ -208,26 +211,26 @@ write.table(dat, file.path(dat.main, nameout), col.names = F,
 
 
 
-#create data file for imputation
-names <- "1"
-for(i in 1 : 5) {
-	for(j in 1 : 5) {
-		names <- c(names, paste0("stdimpute", i, j, ".dat"))
-	}
-}
-cat(names[-1], sep = "\n", file = file.path(dat.main, "stdimpute.dat"))
+# # #create data file for imputation
+# names <- "1"
+# for(i in 1 : 5) {
+	# for(j in 1 : 5) {
+		# names <- c(names, paste0("stdimpute", i, j, ".dat"))
+	# }
+# }
+# cat(names[-1], sep = "\n", file = file.path(dat.main, "stdimpute.dat"))
 
 
 
 
-#create data file for ENDO imputation
-names <- "1"
-for(i in 1 : 5) {
-	for(j in 1 : 5) {
-		names <- c(names, paste0("stdimputeendo", i, j, ".dat"))
-	}
-}
-cat(names[-1], sep = "\n", file = file.path(dat.main, "stdimputeendo.dat"))
+# #create data file for ENDO imputation
+# names <- "1"
+# for(i in 1 : 5) {
+	# for(j in 1 : 5) {
+		# names <- c(names, paste0("stdimputeendo", i, j, ".dat"))
+	# }
+# }
+# cat(names[-1], sep = "\n", file = file.path(dat.main, "stdimputeendo.dat"))
 
 
 
