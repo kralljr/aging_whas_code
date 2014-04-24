@@ -40,6 +40,14 @@ ageedrace <- createDIR(file.path(outfile, "ageedrace"), "ageedrace")
 disvisgds <- createDIR(file.path(outfile, "diseasegdsvision"), "")
 uncon <- createDIR(file.path(outfile, "unconstrain"), "_uncon")
 con <- createDIR(file.path(outfile, "constrain_ageedrace"), "ageedrace_c")
+concl <- createDIR(file.path(outfile, "constrainCL_aje"), "constrainCL_aje")
+nocon <- createDIR(file.path(outfile, "noconstrain_aje"), "noconstrain_aje")
+conclp <- createDIR(file.path(outfile, "constrainclp_aje"), "constrain_clp_aje")
+conclc <- createDIR(file.path(outfile, "constrainclc_aje"), "constrain_clc_aje")
+conarp <- createDIR(file.path(outfile, "constrainarp_aje"), "constrain_arp_aje")
+conarc <- createDIR(file.path(outfile, "constrainarc_aje"), "constrain_arc_aje")
+conplusc <- createDIR(file.path(outfile, "constrainclplusc_aje"), "constrainclplusc_aje")
+conclallequal <- createDIR(file.path(outfile, "constrainclallequal_aje"), "constrainclallequal_aje")
 
 
 
@@ -49,8 +57,8 @@ cog <- c("TB", "HV", "SH", "MM")
 k <- 1
 for(i in 1 : length(phys)) {
 	for(j in 1 : length(cog)) {
-		getests(ageedrace[k], phys[i], cog[j])
-		getests(ageedrace[k], cog[j], phys[i])
+		getests(concl[k], phys[i], cog[j])
+		getests(concl[k], cog[j], phys[i])
 		k <- k + 1
 	}
 }
@@ -68,62 +76,20 @@ for(i in 1 : length(phys)) {
 
 
 
-
+########
+#  CONSTRAINT CL
 
 ####################
 #create pred phys table
 
 rats2 <- rep(1, 8)
-outPHYS <- tabfunP(ageedrace, "TB", "HV", "SH", "MM", "WS", "SP", rats2)
-outPHYS <- tabfunP(con, "TB", "HV", "SH", "MM", "WS", "SP", rats2)
-
-
-
+outPHYS <- tabfunP(concl, "TB", "HV", "SH", "MM", "WS", "SP", rats2)
 
 ####################
 #create pred cog table
 
-outCOG <- tabfunC(ageedrace, "WS", "SP", "TB", "HV", "SH", "MM", rats2)
+outCOG <- tabfunC(concl, "WS", "SP", "TB", "HV", "SH", "MM", rats2)
 
-
-
-
-
-
-#####
-# Format output
-cogs <- c("TMT-B", "HVL-imm","HVL-del", "MMSE")
-phys <- c("WS", "SPPB")
-
-row2cg <- rep(phys, 6)
- row1cg <- rep(c(cogs[1], "", cogs[2], "", cogs[3], ""), 2)
-
-row2ph <- rep(cogs, 4) 
-row1ph <- rep(c(phys[1], "", "", "", phys[2], "", "", ""), 2)
-
-outCOG2 <- data.frame(row1cg, row2cg, outCOG[[1]])
-outPHYS2 <- data.frame(row1ph,row2ph, outPHYS[[1]])
-
-visits <- paste("visit", seq(2,6))
-visits <- c("", "", visits)
-colnames(outCOG2) <- visits
-colnames(outPHYS2) <- visits
-
-
-
-
-#get AR/CL
-#cl
-xtable(outPHYS2[1:6,])
-#ar
-xtable(outPHYS2[7:12,])
-#cl
-xtable(outCOG2[1:6,])
-#ar
-xtable(outCOG2[7:12,])
-# write.csv(outCOG2, file = "outCOG_9apr13.csv")
-# write.csv(outPHYS2, file = "outPHYS_9apr13.csv")
-###
 
 #names
 names(outCOG[[2]]) <- paste0(rep(c("CL", "AR"), each =  3), 
@@ -139,6 +105,89 @@ for(i in 1 : 4) {
 }	
 
 
+
+
+
+
+
+
+########
+# NO CONSTRAINTS
+####################
+#create pred phys table
+
+rats2 <- rep(1, 8)
+outPHYSN <- tabfunP(nocon, "TB", "HV", "SH", "MM", "WS", "SP", rats2)
+
+outPHYSpval <- tabfunP(nocon, "TB", "HV", "SH", "MM", "WS", "SP", rats2, ests = "pvals")
+####################
+#create pred cog table
+
+outCOGN <- tabfunC(nocon, "WS", "SP", "TB", "HV", "SH", "MM", rats2)
+outCOGpval <- tabfunC(nocon, "WS", "SP", "TB", "HV", "SH", "MM", rats2, ests = "pvals")
+
+
+
+
+#####
+# Format output
+cogs <- c("TMT-B", "HVL-imm","HVL-del", "MMSE")
+phys <- c("WS", "SPPB")
+
+row2cg <- rep(phys, 6)
+ row1cg <- rep(c(cogs[1], "", cogs[2], "", cogs[3], ""), 2)
+
+row2ph <- rep(cogs, 4) 
+row1ph <- rep(c(phys[1], "", "", "", phys[2], "", "", ""), 2)
+
+outCOG2 <- data.frame(row1cg, row2cg, outCOGN[[1]])
+outPHYS2 <- data.frame(row1ph,row2ph, outPHYSN[[1]])
+
+visits <- paste("visit", seq(2,6))
+visits <- c("", "", visits)
+colnames(outCOG2) <- visits
+colnames(outPHYS2) <- visits
+
+
+
+
+#get AR/CL
+#cl
+xtable(outPHYS2[1:8,])
+#ar
+xtable(outPHYS2[9:16,])
+#cl
+xtable(outCOG2[1:6,])
+#ar
+xtable(outCOG2[7:12,])
+# write.csv(outCOG2, file = "outCOG_9apr13.csv")
+# write.csv(outPHYS2, file = "outPHYS_9apr13.csv")
+###
+
+
+
+###
+# get LRT pvals for CL
+
+mat <- matrix(nrow = length(nocon), ncol = 2)
+for(i in 1 : length(nocon)) {
+	mat[i, 1] <- getLRTpval(nocon[i], conclp[i], type = "impute")
+	mat[i, 2] <- getLRTpval(nocon[i], conclc[i], type = "impute")
+}
+colnames(mat) <- c("phys", "cog")
+rownames(mat) <- sapply(strsplit(nocon, "/"), function(x) x[10])
+
+
+###
+# get LRT pvals for AR
+
+mat <- matrix(nrow = length(nocon), ncol = 2)
+for(i in 1 : length(nocon)) {
+	mat[i, 1] <- getLRTpval(concl[i], conarp[i], type = "impute")
+	mat[i, 2] <- getLRTpval(concl[i], conarc[i], type = "impute")
+}
+colnames(mat) <- c("phys", "cog")
+rownames(mat) <- sapply(strsplit(nocon, "/"), function(x) x[10])
 
 
 
@@ -163,7 +212,7 @@ sd1a <- list(sd1[c("trailb1", "hvlr1", "hvldel1",
 	"mmse1")], sd1[c("ws1", "sppb1")])
 
 
-namef <- con
+namef <- concl
 
 #for phys/cog
 mat <- list()
@@ -210,6 +259,7 @@ for(i in 1 : 2) {
 				
 				est <- est * sdU
 				
+				#dont use
 				lb <- round(est - 1.96 * tempse * sdU, 3)
 				ub <- round(est + 1.96 * tempse * sdU, 3)
 				est <- round(est, 3)
@@ -225,9 +275,60 @@ for(i in 1 : 2) {
 		}#end loop over y
 	
 	}#end loop over table
-	
+names(mat) <- c("cog", "phys")
 	
 temp2 <- getests(file.path(hvl.dir, "sppb_mmse_constrain_17apr13.out"), "SP", "MM")	
 temp <- as.character(temp2[[2]][1, 1])
 substr(temp2[[2]][1, 1], 7, 10)
 
+
+
+
+
+
+#####
+# get residual corr
+for(i in 1 : length(concl)) {
+	par1 <- extractModelParameters(concl[i])[[2]]
+	name1 <- sapply(strsplit(par1[, 1], "\\."), function(x) x[2])
+	par1 <- par1[which(name1 == "WITH"), ]
+	if(i == 1) {
+		pars <- par1
+	}else{
+		pars <- rbind(pars, par1)
+		
+	}
+	
+}
+
+
+
+
+####
+# get param info
+for(i in 1 : length(conplusc)) {
+	par1 <- extractModelParameters(conplusc[i])[[1]]
+	name1 <- sapply(strsplit(par1[, 1], "\\."), function(x) x[1])
+	par1 <- as.numeric(par1[which(name1 == "New"), ])
+	est <- par1[3]
+	ci <- est + c(-1.96, 1.96) * par1[4]
+	par1 <- c(est, ci)
+	if(i == 1) {
+		pars <- par1
+	}else{
+		pars <- rbind(pars, par1)
+		
+	}
+	
+}
+rownames(pars) <- sapply(strsplit(conplusc, "/"), function(x) x[10])
+
+###
+# get LRT pvals for CL
+
+mat <- matrix(nrow = length(concl), ncol = 2)
+for(i in 1 : length(concl)) {
+	mat[i, 1] <- getLRTpval(concl[i], conclallequal[i], type = "impute")
+}
+colnames(mat) <- c("phys", "cog")
+rownames(mat) <- sapply(strsplit(concl, "/"), function(x) x[10])
