@@ -11,6 +11,8 @@ source(file.path(home.dir, "aging_code", "parsing_mplus_files.R"))
 source(file.path(home.dir, "aging_code", "aging_plotfun.R"))
 
 
+outfile <- file.path(moddir, "runfiles")
+
 
 library(RColorBrewer)
 library(colorspace)
@@ -21,15 +23,9 @@ library(lattice)
 
 ###########
 #get output from Mplus
-con <- createDIR(file.path(outfile, "constrain_ageedrace"), "ageedrace_c")
-# name1 <- file.path(moddir, "ws_traila_trailb_time_constrain_16apr13.out")
-# name2 <- file.path(moddir, "sppb_traila_trailb_time_constrain_16apr13.out")
-# name3 <- file.path(moddir, "ws_hvlr_constrain_16apr13.out")
-# name4 <- file.path(moddir, "sppb_hvlr_constrain_16apr13.out")
-# name5 <- file.path(moddir, "ws_sqhvldel_constrain_16apr13.out")
-# name6 <- file.path(moddir, "sppb_sqhvldel_constrain_16apr13.out")
-# name7 <-file.path(moddir, "ws_mmse_constrain_17apr13.out")
-# name8 <- file.path(moddir, "sppb_mmse_constrain_17apr13.out")
+physv <- c("ws", "sppb")
+cogv <- c("tb", "hvlr", "shvldel", "mmse")
+con <- createDIR(file.path(outfile, "constrainCL_aje"), "constrainCL_aje")
 
 	
 	
@@ -56,7 +52,7 @@ pchs <- c(16, 17, 15, 18, 1, 2, 22, 23)
 #which file path
 namef <- con
 
-# pdf("Paper_ARPHYS_finalconstrain_25apr13.pdf", height = 7, width = 13)
+pdf("Figure3_ARP_submitAJE_r1.pdf", height = 7, width = 13)
 
 #for color/ppt
 # cp <- 4
@@ -145,7 +141,7 @@ plotsidebyside(namef[4], namef[8], "WS", "WS","SP", "SP", c(0.2,.8), c(1.5,6.5),
 # graphics.off()
 
 # plot(1, 1, type = "n", axes = F, xlab = "", ylab = "")
-# graphics.off()
+graphics.off()
 
 
 
@@ -154,10 +150,7 @@ plotsidebyside(namef[4], namef[8], "WS", "WS","SP", "SP", c(0.2,.8), c(1.5,6.5),
 
 
 # #AR effects of cog
-# pdf("Paper_ARcog_color_10feb12.pdf",height=7, width=15)
-# pdf("Paper_ARcog_10feb12.pdf",height=7, width=15)
-# pdf("Paper_ARCOG_constrain_16apr13.pdf", height = 7, width = 15)
-# pdf("Paper_ARCOG_finalconstrain_25apr13.pdf", height = 9, width = 9)
+pdf("Figure2_ARC_submitAJE_r1.pdf", height = 7, width = 11)
 
 # cp <- 4
 # cl <- 3
@@ -169,10 +162,10 @@ par(mfrow = c(2, 2), mar = c(2, 4, 3, 0), oma = c(1, 6, 0, 0 ))
 
 #tb:
 plotsidebyside(namef[5], namef[1],  "TB", "TB","TB", "TB", c(0,1), c(1.5,6.5),
-	"",
-	"b. HVL-imm", 
+	"a. TMT-B",
+	"", 
 	"previous cog", "cog",  pch2 = pchs[1], ltys = ltys[1], lwds = 1, col2 = cols[1],
-	cexlab = cl, cexpt = cp, caxis = ca, axis1 = F, plot2 = T)
+	cexlab = cl, cexpt = cp, caxis = ca, axis1 = F, plot2 = T, axis2 = T)
 # mtext(paste("AR effects of cognitive function", sep=""), 
 			# side = 2, line = 0, cex = 3, outer = T)		
 				mtext(expression(atop("Change in baseline sd of y"["t"]) ,"for baseline sd increase in y"["t-1"]), 
@@ -247,7 +240,7 @@ legend("bottomleft", col = cols[c(7, 8)], lty = ltys[c(7, 8)],
 	"(viii): SPPB"), cex = cleg)
 				# c("WS (i, iii, v)",
 	# "SPPB (ii, iv, vi)")
-# graphics.off()
+graphics.off()
 
 
 
