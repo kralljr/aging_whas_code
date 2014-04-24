@@ -6,18 +6,207 @@ masterdir <-  file.path(masterdir1, "final_models")
 
 source(file.path(masterdir1, "aging_code", "run_mplus_models.R"))
 
-homedir <- file.path(masterdir, "runfiles")
-outfile <- "diseasegds.inp"  
-datafiles <- c("datuse/stdimpute.dat", "datuse/std_all_aging_data.dat")
 
+
+
+
+################
+# AJE resub: no constrain
+homedir <- file.path(masterdir, "runfiles")
+outfile <- "noconstrain_aje.inp"  
+datafiles <- c("datuse/stdimpute.dat", "datuse/blank.dat")
 
 physv <- c("ws", "sppb")
 cogv <- c("tb", "hvlr", "shvldel", "mmse")
 
 
-outMod(homedir, outfile, datafiles, physv, cogv, constraint = c("clp", "clc"))
+outMod(homedir, outfile, datafiles, physv, 
+	cogv)
 
 
+
+
+
+################
+# AJE resub: constrain CL
+homedir <- file.path(masterdir, "runfiles")
+outfile <- "constrainCL_aje.inp"  
+datafiles <- c("datuse/stdimpute.dat", "datuse/blank.dat")
+
+physv <- c("ws", "sppb")
+cogv <- c("tb", "hvlr", "shvldel", "mmse")
+
+
+outMod(homedir, outfile, datafiles, physv, 
+	cogv, constraint = c("clp", "clc"))
+
+
+
+
+
+
+################
+# AJE resub: constrain all
+homedir <- file.path(masterdir, "runfiles")
+outfile <- "constrain_all_aje.inp"  
+datafiles <- c("datuse/stdimpute.dat", "datuse/blank.dat")
+
+physv <- c("ws", "sppb")
+cogv <- c("tb", "hvlr", "shvldel", "mmse")
+
+
+outMod(homedir, outfile, datafiles, physv, 
+	cogv, constraint = c("clp", "clc", "arp", "arc"))
+
+
+
+
+
+################
+# AJE resub: constrain all
+homedir <- file.path(masterdir, "runfiles")
+outfile <- "constrain_all_aje.inp"  
+datafiles <- c("datuse/stdimpute.dat", "datuse/blank.dat")
+
+physv <- c("ws", "sppb")
+cogv <- c("tb", "hvlr", "shvldel", "mmse")
+
+
+outMod(homedir, outfile, datafiles, physv, 
+	cogv, constraint = c("clp", "clc", "arp", "arc"))
+
+
+
+
+
+
+################
+# AJE resub: constrain CLP
+homedir <- file.path(masterdir, "runfiles")
+outfile <- "constrain_clp_aje.inp"  
+datafiles <- c("datuse/stdimpute.dat", "datuse/blank.dat")
+
+physv <- c("ws", "sppb")
+cogv <- c("tb", "hvlr", "shvldel", "mmse")
+
+
+outMod(homedir, outfile, datafiles, physv, 
+	cogv, constraint = c("clp"))
+
+
+
+
+
+################
+# AJE resub: constrain CLC
+homedir <- file.path(masterdir, "runfiles")
+outfile <- "constrain_clc_aje.inp"  
+datafiles <- c("datuse/stdimpute.dat", "datuse/blank.dat")
+
+physv <- c("ws", "sppb")
+cogv <- c("tb", "hvlr", "shvldel", "mmse")
+
+
+outMod(homedir, outfile, datafiles, physv, 
+	cogv, constraint = c("clc"))
+
+
+
+################
+# AJE resub: constrain arC
+homedir <- file.path(masterdir, "runfiles")
+outfile <- "constrain_arc_aje.inp"  
+datafiles <- c("datuse/stdimpute.dat", "datuse/blank.dat")
+
+physv <- c("ws", "sppb")
+cogv <- c("tb", "hvlr", "shvldel", "mmse")
+
+
+outMod(homedir, outfile, datafiles, physv, 
+	cogv, constraint = c("clc", "clp", "arc"))
+
+
+################
+# AJE resub: constrain arp
+homedir <- file.path(masterdir, "runfiles")
+outfile <- "constrain_arp_aje.inp"  
+datafiles <- c("datuse/stdimpute.dat", "datuse/blank.dat")
+
+physv <- c("ws", "sppb")
+cogv <- c("tb", "hvlr", "shvldel", "mmse")
+
+
+outMod(homedir, outfile, datafiles, physv, 
+	cogv, constraint = c("clc", "clp", "arp"))
+
+
+
+
+################
+# AJE resub: constrain CL to be equal + c
+homedir <- file.path(masterdir, "runfiles")
+outfile <- "constrainCLplusc_aje.inp"  
+datafiles <- c("datuse/stdimpute.dat", "datuse/blank.dat")
+
+physv <- c("ws", "sppb")
+cogv <- c("tb", "hvlr", "shvldel", "mmse")
+
+
+outMod(homedir, outfile, datafiles, physv, 
+	cogv, constraint = c("clp", "clc", "cl"))
+
+
+
+
+################
+# AJE resub: constrain CL to be all equal
+homedir <- file.path(masterdir, "runfiles")
+outfile <- "constrainCLallequal_aje.inp"  
+datafiles <- c("datuse/stdimpute.dat", "datuse/blank.dat")
+
+physv <- c("ws", "sppb")
+cogv <- c("tb", "hvlr", "shvldel", "mmse")
+
+
+outMod(homedir, outfile, datafiles, physv, 
+	cogv, constraint = c("clp", "clc", "cl"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#####
+# other models
 #########
 # change imputation
 homedir <- file.path(masterdir, "runfiles")
