@@ -33,7 +33,7 @@ outMod <- function(homedir, outfile1, datafiles,
 	centervar = NULL, 
 	missvar = NULL, 
 	missval = 999, constraint = NULL, test = NULL,
-	censor = NULL, resid = F, lags = 1) {
+	censor = NULL, resid = F, lags = 1, imputeGDS = T) {
 	
 	if(is.null(physall) | is.null(cogall)) {
 		physall <- c("ws", "sppb")
@@ -47,7 +47,7 @@ outMod <- function(homedir, outfile1, datafiles,
 		for(j in 1 : length(cogall)) {
 			print(cogall[j])
 			#specify datafile
-			if(cogall[j] == "tb") {
+			if(cogall[j] == "tb" | imputeGDS == T) {
 				datafile1 <- datafiles[1]
 			}else{
 				datafile1 <- datafiles[2]
@@ -62,7 +62,7 @@ outMod <- function(homedir, outfile1, datafiles,
 			createMod(outfile, physall[i], cogall[j], datafile1, 
 				colnames, centervar, missvar, 
 				missval, constraint, test, censor, resid,
-				lags)
+				lags, imputeGDS)
 		}
 	}
 	
@@ -94,7 +94,7 @@ createMod <- function(outfile, physv, cogv, datafile,
 	centervar = NULL, 
 	missvar = NULL, 
 	missval = 999, constraint = NULL, test = NULL, censor = NULL,
-	resid = F, lags = 1) {
+	resid = F, lags = 1, imputeGDS = T) {
 	
 	
 	#get sequence information
@@ -140,6 +140,11 @@ createMod <- function(outfile, physv, cogv, datafile,
 		ta <- paste0("ta", seqs)
 		usenames[[6]] <- ta
 		
+		
+		
+	}
+	
+	if(cogv == "tb" | imputeGDS == T) {
 		#fix variables
 		colnames[[1]] <- c(paste0("imp", seq(1, 2)), colnames[[1]])
 	}
@@ -147,7 +152,7 @@ createMod <- function(outfile, physv, cogv, datafile,
 	
 	#concatenate beginning info
 	catinfo(cogv, title, outfile, datafile, colnames, 
-		usenames, centervar, missvar, missval, censor)
+		usenames, centervar, missvar, missval, censor, imputeGDS)
 
 	#get model info	
 	getARCL(physv, cogv, outfile, seqs, censor, resid, lags)
@@ -192,12 +197,12 @@ constrainARCL <- function(constraint, seqs, outfile, lags = 1) {
 		n <- n - 1
 		ttk <- paste0(constraint[1], 2)
 		ttk1 <- paste0(constraint[2], 2)
-		cat("\n\t NEW(c*0);", file = outfile, 
-				sep = "", append = T)		
-		cat("\n\t", paste0(ttk, "=", ttk1, " + c;"), file = outfile, 
-				sep = "", append = T)		
-		# cat("\n\t", paste0(ttk, "=", ttk1, ";"), file = outfile, 
-				# sep = "", append = T)
+		# cat("\n\t NEW(c*0);", file = outfile, 
+				# sep = "", append = T)		
+		# cat("\n\t", paste0(ttk, "=", ttk1, " + c;"), file = outfile, 
+				# sep = "", append = T)		
+		cat("\n\t", paste0(ttk, "=", ttk1, ";"), file = outfile, 
+				sep = "", append = T)
 	}
 	
 	for(j in 1 : n) {
@@ -238,7 +243,8 @@ constrainARCL <- function(constraint, seqs, outfile, lags = 1) {
 # centervar is variables to center
 # missvar is variables with missing values
 catinfo <- function(cogv, title, outfile, datafile, cns, 
-	usenames, centervar, missvar, missval = 999, censor = NULL) {
+	usenames, centervar, missvar, missval = 999, censor = NULL,
+	imputeGDS = T) {
 		
 	#specify title
 	cat("TITLE:", title, file = outfile, 
@@ -251,7 +257,7 @@ catinfo <- function(cogv, title, outfile, datafile, cns,
 
 
 	#if TMT-B, then imputation
-	if(cogv == "tb") {
+	if(cogv == "tb" | imputeGDS == T) {
 		cat("\n\tTYPE= IMPUTATION;", file = outfile, 
 			sep = " ", append = T)
 	}
