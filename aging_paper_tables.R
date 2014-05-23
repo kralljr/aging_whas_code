@@ -92,15 +92,15 @@ outCOG <- tabfunC(concl, "WS", "SP", "TB", "HV", "SH", "MM", rats2)
 
 
 #names
-names(outCOG[[2]]) <- paste0(rep(c("CL", "AR"), each =  3), 
-	rep(c("TB", "HVLR", "SQHVLDEL"), 2))
+names(outCOG[[2]]) <- paste0(rep(c("CL", "AR"), each =  4), 
+	rep(c("TB", "HVLR", "SQHVLDEL", "MMSE"), 2))
 for(i in 1 : 6) {
 	names(outCOG[[2]][[i]]) <- c("WS", "SPPB")
 }	
 names(outPHYS[[2]]) <- paste0(rep(c("CL", "AR"), each =  2), 
 	rep(c("WS", "SP"), 2))	
 for(i in 1 : 4) {
-	names(outPHYS[[2]][[i]]) <- c("TB", "HVLr", "SQHVLdel")
+	names(outPHYS[[2]][[i]]) <- c("TB", "HVLr", "SQHVLdel", "MMSE")
 	
 }	
 
@@ -134,8 +134,8 @@ outCOGpval <- tabfunC(nocon, "WS", "SP", "TB", "HV", "SH", "MM", rats2, ests = "
 cogs <- c("TMT-B", "HVL-imm","HVL-del", "MMSE")
 phys <- c("WS", "SPPB")
 
-row2cg <- rep(phys, 6)
- row1cg <- rep(c(cogs[1], "", cogs[2], "", cogs[3], ""), 2)
+row2cg <- rep(phys, 8)
+ row1cg <- rep(c(cogs[1], "", cogs[2], "", cogs[3], "", cogs[4], ""), 2)
 
 row2ph <- rep(cogs, 4) 
 row1ph <- rep(c(phys[1], "", "", "", phys[2], "", "", ""), 2)
@@ -157,7 +157,7 @@ xtable(outPHYS2[1:8,])
 #ar
 xtable(outPHYS2[9:16,])
 #cl
-xtable(outCOG2[1:6,])
+xtable(outCOG2[1:8,])
 #ar
 xtable(outCOG2[7:12,])
 # write.csv(outCOG2, file = "outCOG_9apr13.csv")
