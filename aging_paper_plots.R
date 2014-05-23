@@ -167,63 +167,94 @@ graphics.off()
 
 
 # #AR effects of cog
-pdf("Figure2_ARC_submitAJE_r1.pdf", height = 7, width = 11)
+pdf("Figure2_ARC_submitAJE_r2.pdf", height = 7, width = 11)
 
-# cp <- 4
-# cl <- 3
-# ca <- 4
-# cleg <- 3
-# par(mfrow = c(1,3), mar = c(5,4,6,0), oma = c(1, 2, 1, 0))
-# par(mfrow = c(1, 3), mar = c(6, 5, 5, 0), oma = c(0, 3, 0, 0 ))
-par(mfrow = c(2, 2), mar = c(2, 4, 3, 0), oma = c(1, 6, 0, 0 ))
+######
 
-#tb:
-plotsidebyside(namef[5], namef[1],  "TB", "TB","TB", "TB", c(0,1), c(1.5,6.5),
+cleg <- 1.2
+
+### TMT-B
+par(mfrow = c(2, 2), mar = c(2, 7, 3, 2), oma = c(0, 0, 0, 0 ))
+
+plotsidebyside(namef[5], namef[1],  "TB", "TB","TB", "TB", c(-0.1,1), c(1.5,6.5),
 	"a. TMT-B",
 	"", 
 	"previous cog", "cog",  pch2 = pchs[1], ltys = ltys[1], lwds = 1, col2 = cols[1],
 	cexlab = cl, cexpt = cp, caxis = ca, axis1 = F, plot2 = T, axis2 = T)
-# mtext(paste("AR effects of cognitive function", sep=""), 
-			# side = 2, line = 0, cex = 3, outer = T)		
-				mtext(expression(atop("Change in baseline sd of y"["t"]) ,"for baseline sd increase in y"["t-1"]), 
-			side = 2, line = -1, cex = 1.5, outer = T)		
+		
 plotsidebyside(namef[1], namef[5],  "TB", "TB","TB", "TB",c(0.2,.8), c(1.5,6.5),
 	"",
 	"b. HVL-imm", 
 	"previous cog", "cog", pch2 = pchs[5], plot = FALSE,plot2 = T, 
 	seqs = seq(2.2, 6.2),
 	col2 = cols[4], ltys = ltys[4],cexlab = cl, cexpt = cp, caxis = ca, lwds = 1)
-legend("bottomleft", col = cols[c(1, 4)], lty = ltys[c(1, 4)],
-	lwd = c(1,1), pch = c(pchs[1], pchs[5]), legend = c("(i): WS",
-	"(ii): SPPB"), cex = cleg)
 	
-mtext("a. TMT-B", cex = ca)	
+
+mtext(expression(atop("Change in TMT-B at visit t") ,"for increase in TMT-B at visit t-1"), 
+			side = 2, line = 3, cex = cm, outer = F)
+		
+	
+legend("bottomleft", title = "Models", 
+	col = cols[c(1, 4)], lty = ltys[c(1, 4)],
+	lwd = c(1,1), pch = c(pchs[1], pchs[5]), legend = c("(i): WS/TMT-B",
+	"(ii): SPPB/TMT-B"), cex = cleg, bty = "n")
+	
 		
 
-par(mar = c(2,0,3,4))		
-plotsidebyside(namef[6], namef[2],  "HV", "HV","HV", "HV", c(0,1), c(1.5,6.5),
+
+		
+		
+####
+# HVL-imm
+#####		
+
+par(mar = c(2, 2, 3, 7))		
+plotsidebyside(namef[6], namef[2],  "HV", "HV","HV", "HV", c(-0.1,1), c(1.5,6.5),
 	"a. TMT-B",
 	"", 
 	"previous cog", "cog", pch2 = pchs[2], plot2 = TRUE, ltys = ltys[2], lwds = 1,
 	col2 = cols[2],cexlab = cl, cexpt = cp, caxis = ca, axis1 = F)		
+	
+
+mtext(expression(atop("Change in HVLT-imm at visit t") ,"for increase in HVLT-imm at visit t-1"), 
+			side = 2, line = 0.5, cex = cm, outer = F)
+		
+	
 plotsidebyside(namef[2], namef[6],  "HV", "HV","HV", "HV", c(0.2,.8), c(1.5,6.5),
 	"a. TMT-B",
 	"b. HVL-imm", 
 	"previous cog", "cog",  pch2 = pchs[6], plot = FALSE, seqs = seq(2.2, 6.2),
 	col2 = cols[5], plot2 = TRUE, ltys = ltys[5],cexlab = cl, cexpt = cp, caxis = ca,
 	lwds = 1)	
-legend("bottomleft", col = cols[c(2, 5)], lty = ltys[c(2, 5)],
-	lwd = c(1, 1), pch = c(pchs[2], pchs[6]), legend = c("(iii): WS",
-	"(iv): SPPB"), cex = cleg)
+legend("bottomleft", title= "Models", 
+	col = cols[c(2, 5)], lty = ltys[c(2, 5)],
+	lwd = c(1, 1), pch = c(pchs[2], pchs[6]), legend = 	c("(iii): WS/HVLT-imm",
+	"(iv): SPPB/HVLT-imm"), cex = cleg, bty = "n")
 	
-mtext("b. HVLT-imm", cex = ca)		
 	
-par(mar = c(5,4,0,0))	
-plotsidebyside(namef[7], namef[3], "SH", "SH","SH", "SH", c(0,1), c(1.5,6.5),
+	
+	
+	
+	
+		
+####
+# HVL-imm
+#####	
+par(mar = c(5,7,0,2))	
+plotsidebyside(namef[7], namef[3], "SH", "SH","SH", "SH", c(-0.1,1), c(1.5,6.5),
 	"a. TMT-B",
 	"", 
 	"previous cog", "cog", pch2 = pchs[3], ltys = ltys[3], lwds = 1,
 	col2 = cols[3],cexlab = cl, cexpt = cp, caxis = ca, plot2 = T, axis2= T)	
+	
+	mtext(expression(atop("Change in " * HVLT-del^"2" * " at visit t", 
+		"for increase in " * HVLT-del^"2" *" at visit t-1" )),
+		side = 2, line = 3, cex = cm, outer = F)
+		
+	
+
+	
+	
 plotsidebyside(namef[3], namef[7],  "SH", "SH","SH", "SH",  c(0.2,.8), c(1.5,6.5),
 	"a. TMT-B",
 	"b. HVL-imm", 
@@ -231,18 +262,26 @@ plotsidebyside(namef[3], namef[7],  "SH", "SH","SH", "SH",  c(0.2,.8), c(1.5,6.5
 	col2 = cols[6], plot2 = TRUE, ltys = ltys[6],
 	cexlab = cl, cexpt = cp, caxis = ca, lwds = 1)	
 	
-legend("bottomleft", col = cols[c(3, 6)], lty = ltys[c(3, 6)],
-	lwd = c(1, 1), pch = c(pchs[3], pchs[7]), legend = c("(v): WS",
-	"(vi): SPPB"), cex = cleg)
-	
-	mtext(expression(paste("c. HVLT-del"^2)), cex = ca)	
+legend("bottomleft", title = "Models", col = cols[c(3, 6)], lty = ltys[c(3, 6)],
+	lwd = c(1, 1), pch = c(pchs[3], pchs[7]), legend = c(expression(paste("(v): WS/HVLT-del"^2)),
+	expression(paste("(vi): SPPB/HVLT-del"^2))), 
+	cex = cleg, bty = "n")
 
-par(mar = c(5,0,0,4))	
-plotsidebyside(namef[8], namef[4], "MM", "MM","MM", "MM", c(0,1), c(1.5,6.5),
+
+		
+####
+# HVL-imm
+#####
+par(mar = c(5,2,0,7))	
+plotsidebyside(namef[8], namef[4], "MM", "MM","MM", "MM", c(-0.1,1), c(1.5,6.5),
 	"a. TMT-B",
 	"", 
 	"previous cog", "cog", pch2 = pchs[4], plot2 = TRUE, ltys = ltys[7], lwds = 1,
 	col2 = cols[7],cexlab = cl, cexpt = cp, caxis = ca )	
+	
+	mtext(expression(atop("Change in MMSE at visit t") ,"for increase in MMSE at visit t-1"), 
+			side = 2, line = 0.5, cex = cm, outer = F)
+		
 plotsidebyside(namef[4], namef[8], "MM", "MM","MM", "MM",  c(0.2,.8), c(1.5,6.5),
 	"a. TMT-B",
 	"b. HVL-imm", 
@@ -250,13 +289,11 @@ plotsidebyside(namef[4], namef[8], "MM", "MM","MM", "MM",  c(0.2,.8), c(1.5,6.5)
 	col2 = cols[8], plot2 = TRUE, ltys = ltys[8],
 	cexlab = cl, cexpt = cp, caxis = ca, lwds = 1)	
 	
-mtext("d. MMSE", cex = ca)		
 	
-legend("bottomleft", col = cols[c(7, 8)], lty = ltys[c(7, 8)],
-	lwd = c(1, 1), pch = c(pchs[4], pchs[8]), legend = c("(vii): WS",
-	"(viii): SPPB"), cex = cleg)
-				# c("WS (i, iii, v)",
-	# "SPPB (ii, iv, vi)")
+legend("bottomleft", title = "Models", col = cols[c(7, 8)], lty = ltys[c(7, 8)],
+	lwd = c(1, 1), pch = c(pchs[4], pchs[8]), legend = c("(vii): WS/MMSE",
+	"(viii): SPPB/MMSE"), cex = cleg, bty = "n")
+
 graphics.off()
 
 
