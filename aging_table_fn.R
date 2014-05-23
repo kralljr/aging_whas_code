@@ -275,13 +275,13 @@ tabfunC <- function(listnames, x1, x2, y1, y2, y3, y4, rats, ests = "ests") {
 	#ws -> hvldel, sppb-> hvldel
 	out7 <- makedfC(listnames[3], y3, y3, 
 		listnames[7], y3, y3, ests = ests)	
-	out7 <- makedfC(listnames[4], y4, y4, 
+	out8 <- makedfC(listnames[4], y4, y4, 
 		listnames[8], y4, y4, ests = ests)	
 
 	list(data.frame(rbind(out1[[1]], out2[[1]], out3[[1]], 
-		out4[[1]], out5[[1]], out6[[1]])),
+		out4[[1]], out5[[1]], out6[[1]], out7[[1]], out8[[1]])),
 		list(out1[[2]], out2[[2]], out3[[2]], 
-		out4[[2]], out5[[2]], out6[[2]]))
+		out4[[2]], out5[[2]], out6[[2]], out7[[2]], out8[[2]]))
 	
 }
 
