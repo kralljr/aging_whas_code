@@ -77,7 +77,7 @@ mat <- matrix(c(1, 1, 2, 3, 3, 4), nrow = 2,
 layout(mat)
 
 #TRAIL B
-plotsidebyside(namef[1], namef[5], "WS", "WS","SP", "SP", c(0.15,.9),  c(1.8,6.6),
+plotsidebyside(namef[1], namef[5], "WS", "WS","SP", "SP", c(-0.1,1),  c(1.8,6.6),
 	"",
 	"", 
 	"previous phys", "phys", pch2 = pchs[1], ltys = ltys[1], lwds = 1, col2 = cols[1],
@@ -116,7 +116,7 @@ plot(1, 1, type = "n", xlab ="", ylab = "", axes = F)
 
 	
 par(mar = c(5,7,1,1))		
-plotsidebyside(namef[1], namef[5], "WS", "WS","SP", "SP", c(0.15,.9), c(1.8,6.6),
+plotsidebyside(namef[1], namef[5], "WS", "WS","SP", "SP", c(-0.1,1), c(1.8,6.6),
 	"",
 	"", 
 	"previous phys", "phys", pch2 = pchs[5], plot2 = T, ltys = ltys[4], lwds = 1,

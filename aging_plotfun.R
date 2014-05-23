@@ -53,7 +53,7 @@ plotsidebyside <- function(name1, name2, typey, typex, typey2, typex2, ylims, xl
 		ats <- 4.3
 		seq1 <- seqs + .3
 	}else{
-		ats <- 4.2
+		ats <- 4.1
 		seq1 <- seqs + .1
 		}
 
@@ -70,7 +70,7 @@ plotsidebyside <- function(name1, name2, typey, typex, typey2, typex2, ylims, xl
 					cex.axis = caxis, tick = T)
 				mtext("Visit", side = 1, at = ats, cex = cexlab, line = 5)
 				}
-			 axis(2, cex.axis = caxis)
+			 axis(2, at = c(0, 0.4, 0.8), cex.axis = caxis)
 			 box()
 		mtext(mtext1, cex= cexlab, line = 1)
 		# mtext(paste("baseline stddev change in ",stdy," for a\n",
@@ -106,7 +106,7 @@ plotsidebyside <- function(name1, name2, typey, typex, typey2, typex2, ylims, xl
 				mtext("Visit", side = 1, at = ats, cex = cexlab, line = 3)
 				}
 			if(axis2 != F){
-				axis(2, cex.axis = caxis, tick = T)
+				axis(2, at = c(0, 0.4, 0.8), cex.axis = caxis, tick = T)
 			}	
 			 box()
 		mtext(mtext2, cex = cexlab, line = 1)
