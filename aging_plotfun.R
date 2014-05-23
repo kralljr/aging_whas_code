@@ -49,7 +49,11 @@ plotsidebyside <- function(name1, name2, typey, typex, typey2, typex2, ylims, xl
 	
 	# pch1 <- 16
 	# pch2 <- 17
-	
+	if(typey == "WS") {
+		seq1 <- seqs + .3
+	}else{
+		seq1 <- seqs + .1
+		}
 
 	if(plot2 == FALSE) {
 	
@@ -59,8 +63,10 @@ plotsidebyside <- function(name1, name2, typey, typex, typey2, typex2, ylims, xl
 			cex.lab = cexlab, cex = cexpt, cex.axis = caxis, axes = F)
 			
 			if(axis1 != F) {
-				axis(1, cex.axis = caxis, tick = T)
-				mtext("Visit", side = 1, cex = cexlab, line = 5)
+				
+				axis(1, at = seq1, labels = seqs,
+					cex.axis = caxis, tick = T)
+				mtext("Visit", side = 1, at = 3.5, cex = cexlab, line = 5)
 				}
 			 axis(2, cex.axis = caxis)
 			 box()
@@ -92,8 +98,8 @@ plotsidebyside <- function(name1, name2, typey, typex, typey2, typex2, ylims, xl
 			cex.lab = cexlab, cex = cexpt, cex.axis = caxis, axes = F)
 			#			 axis(2, cex.axis = caxis)
 			if(axis1 != F) {
-				axis(1, cex.axis = caxis, tick = T)
-				mtext("Visit", side = 1, cex = cexlab, line = 5)
+				axis(1, at = seq1, labels = seqs, cex.axis = caxis, tick = T)
+				mtext("Visit", side = 1, at = 4.3, cex = cexlab, line = 3)
 				}
 			if(axis2 != F){
 				axis(2, cex.axis = caxis, tick = T)

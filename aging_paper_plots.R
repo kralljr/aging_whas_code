@@ -52,7 +52,8 @@ pchs <- c(16, 17, 15, 18, 1, 2, 22, 23)
 #which file path
 namef <- con
 
-pdf("Figure3_ARP_submitAJE_r1.pdf", height = 7, width = 13)
+pdf("Figure3_ARP_submitAJE_r2.pdf", height = 6, 
+	width = 7)
 
 #for color/ppt
 # cp <- 4
@@ -63,78 +64,94 @@ pdf("Figure3_ARP_submitAJE_r1.pdf", height = 7, width = 13)
 #
 #for b&w/paper
 cp <- 2
-cl <- 1.5
+cl <- 1
 ca <- 1.5
 cleg <- 1.5
+cm <- 1
 # par(mfrow = c(1,3), mar = c(6,5,5,0), oma = c(0, 3, 0, 0))
-par(mfrow = c(1,2), mar = c(6,4,5,0), oma = c(0, 6, 0, 0))
+# par(mfrow = c(2,2), mar = c(1,7,5,1), oma = c(0, 0, 0, 0))
+par(mar = c(1,7,5,1), oma = c(0, 0, 0, 0))
 
+mat <- matrix(c(1, 1, 2, 3, 3, 4), nrow = 2, 
+	byrow = T)
+layout(mat)
 
 #TRAIL B
-plotsidebyside(namef[1], namef[5], "WS", "WS","SP", "SP", c(0,.9), c(1.5,6.5),
-	"a. Walking speed",
-	"b. SPPB", 
+plotsidebyside(namef[1], namef[5], "WS", "WS","SP", "SP", c(0.15,.9),  c(1.8,6.6),
+	"",
+	"", 
 	"previous phys", "phys", pch2 = pchs[1], ltys = ltys[1], lwds = 1, col2 = cols[1],
-	axis1 = T,cexlab = cl, cexpt = cp, caxis = ca)
+	axis1 = F,cexlab = cl, cexpt = cp, caxis = ca)
 	# mtext(paste("AR effects of physical function", sep=""), 
 			# side = 2, line = 0, cex = 3, outer = T)	
-	mtext(expression(atop("Change in baseline sd of x"["t"]) ,"for baseline sd increase in x"["t-1"]), 
-			side = 2, line = -1, cex = 1.5, outer = T)		
+	mtext(expression(atop("Change in WS at visit t") ,"for increase in WS at visit t-1"), 
+			side = 2, line = 3, cex = cm, outer = F)		
 plotsidebyside(namef[2], namef[6], "WS", "WS","SP", "SP", c(0.2,.8), c(1.5,6.5),
-	"a. Walking speed",
-	"b. SPPB", 
+	"",
+	"", 
 	"previous phys", "phys", pch2 = pchs[2], plot = FALSE, seqs = seq(2.2, 6.2),
 	col2 = cols[2], ltys = ltys[2],cexlab = cl, cexpt = cp, caxis = ca, lwds =1)	
 plotsidebyside(namef[3], namef[7], "WS", "WS","SP", "SP", c(0.2,.8), c(1.5,6.5),
-	"a. Walking speed",
-	"b. SPPB", 
+	"",
+	"", 
 	"previous phys", "phys", pch2 = pchs[3], plot = FALSE, seqs = seq(2.4, 6.4),
 	col2 = cols[3], ltys = ltys[3], lwds = 1,cexlab = cl, cexpt = cp, caxis = ca)		
 plotsidebyside(namef[4], namef[8], "WS", "WS","SP", "SP", c(0.2,.8), c(1.5,6.5),
-	"a. Walking speed",
-	"b. SPPB", 
+	"",
+	"", 
 	"previous phys", "phys", pch2 = pchs[4], plot = FALSE, seqs = seq(2.6, 6.6),
 	col2 = cols[7], ltys = ltys[7], lwds = 1,cexlab = cl, cexpt = cp, caxis = ca)		
 	
-	legend("bottomright", col = cols[c(1:3, 7)], lty = ltys[c(1:3, 7)],
-	lwd = rep(1, 4), pch = pchs[1:4], legend = c("(i): TMT-B",
-	"(iii): HVLT-imm",  expression(paste("(v): HVLT-del"^2)) , "(vii): MMSE") , cex = cleg)
+	
+par(mar = c(0,0,5,0))
+plot(1, 1, type = "n", xlab ="", ylab = "", axes = F)
+	
+	legend("topleft", title = "Models", 
+		col = cols[c(1:3, 7)], lty = ltys[c(1:3, 7)],
+	lwd = rep(1, 4),  bty = "n",pch = pchs[1:4], legend = c("(i): WS/TMT-B",
+	"(iii): WS/HVLT-imm",  expression(paste("(v): WS/HVLT-del"^2)) , "(vii): WS/MMSE") , cex = cleg)
 #"(i): TMT-B, p<0.01",
 	# "(iii): HVL-imm, p<0.01", "(v): HVL-del^2, p=?"	
 	
 
 	
-par(mar = c(6,0,5,4))		
-plotsidebyside(namef[1], namef[5], "WS", "WS","SP", "SP", c(0,.9), c(1.5,6.5),
-	"a. Walking speed",
-	"b. SPPB", 
-	"previous phys", "phys", pch2 = pchs[5], plot2 = TRUE, ltys = ltys[4], lwds = 1,
-	col2 = cols[4], axis1 = T,cexlab = cl, cexpt = cp, caxis = ca)	
+par(mar = c(5,7,1,1))		
+plotsidebyside(namef[1], namef[5], "WS", "WS","SP", "SP", c(0.15,.9), c(1.8,6.6),
+	"",
+	"", 
+	"previous phys", "phys", pch2 = pchs[5], plot2 = T, ltys = ltys[4], lwds = 1,
+	col2 = cols[4], axis1 = T,cexlab = cl, cexpt = cp, caxis = ca, axis2 = T)	
+		mtext(expression(atop("Change in SPPB at visit t") ,"for increase in SPPB at visit t-1"), 
+			side = 2, line = 3, cex = cm, outer = F)
+	
 plotsidebyside(namef[2], namef[6], "WS", "WS","SP", "SP", c(0.2,.8), c(1.5,6.5),
-	"a. Walking speed",
-	"b. SPPB", 
+	"",
+	"", 
 	"previous phys", "phys", pch2 = pchs[6], plot = FALSE, seqs = seq(2.2, 6.2),
 	col2 = cols[5], plot2 = TRUE, ltys = ltys[5],
 	cexlab = cl, cexpt = cp, caxis = ca, lwds = 1)	
 plotsidebyside(namef[3], namef[7], "WS", "WS","SP", "SP", c(0.2,.8), c(1.5,6.5),
-	"a. Walking speed",
-	"b. SPPB", 
+	"",
+	"", 
 	"previous phys", "phys", pch2 = pchs[7], plot = FALSE, seqs = seq(2.4, 6.4),
 	col2 =  cols[6], plot2 = TRUE, ltys = ltys[6], lwds = 1, 
 	cexlab = cl, cexpt = cp, caxis = ca)		
 plotsidebyside(namef[4], namef[8], "WS", "WS","SP", "SP", c(0.2,.8), c(1.5,6.5),
-	"a. Walking speed",
-	"b. SPPB", 
+	"",
+	"", 
 	"previous phys", "phys", pch2 = pchs[8], plot = FALSE, seqs = seq(2.6, 6.6),
 	col2 =  cols[8], plot2 = TRUE, ltys = ltys[8], lwds = 1, 
 	cexlab = cl, cexpt = cp, caxis = ca)		
 	
-	
+par(mar = c(0,0,1,0))	
 	# lwd = c(2, 3, 4, 2)
-		
-	legend("bottomright", col = cols[c(4:6, 8)], lty = ltys[c(4:6, 8)],
-	lwd = rep(1, 4), pch = pchs[5:8], legend = c("(ii): TMT-B",
-	"(iv): HVLT-imm", expression(paste("(vi): HVLT-del"^2)), "(viii): MMSE" ), 
+plot(1, 1, type = "n", xlab ="", ylab = "", axes = F)
+	
+	legend("topleft", col = cols[c(4:6, 8)], title = "Models", 
+		lty = ltys[c(4:6, 8)],
+	lwd = rep(1, 4), pch = pchs[5:8], bty = "n",
+		 legend = c("(ii): SPPB/TMT-B",
+	"(iv): SPPB/HVLT-imm", expression(paste("(vi): SPPB/HVLT-del"^2)), "(viii): SPPB/MMSE" ), 
 	cex = cleg)
 	# "(ii): TMT-B, p=0.07",
 	# "(iv): HVL-imm, p=0.04", "(vi): HVL-del^2, p=0.06"
