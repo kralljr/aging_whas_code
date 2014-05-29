@@ -52,9 +52,11 @@ plotsidebyside <- function(name1, name2, typey, typex, typey2, typex2, ylims, xl
 	if(typey == "WS") {
 		ats <- 4.3
 		seq1 <- seqs + .3
+		ats2 <- 1
 	}else{
 		ats <- 4.1
 		seq1 <- seqs + .1
+		ats2 <- 0.25
 		}
 
 	if(plot2 == FALSE) {
@@ -109,7 +111,7 @@ plotsidebyside <- function(name1, name2, typey, typex, typey2, typex2, ylims, xl
 				axis(2, at = c(0, 0.4, 0.8), cex.axis = caxis, tick = T)
 			}	
 			 box()
-		mtext(mtext2, cex = cexlab, line = 1)
+		mtext(mtext2, cex = cexlab, line = ats2)
 		# abline(h = 0, lty = 2, col = "grey50", lwd=lwds)
 	
 	}else{
