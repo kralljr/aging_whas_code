@@ -70,7 +70,7 @@ cleg <- 1.5
 cm <- 1
 # par(mfrow = c(1,3), mar = c(6,5,5,0), oma = c(0, 3, 0, 0))
 # par(mfrow = c(2,2), mar = c(1,7,5,1), oma = c(0, 0, 0, 0))
-par(mar = c(1,7,5,1), oma = c(0, 0, 0, 0))
+par(mar = c(2,7,5,1), oma = c(0, 0, 0, 0))
 
 mat <- matrix(c(1, 1, 2, 3, 3, 4), nrow = 2, 
 	byrow = T)
@@ -78,7 +78,7 @@ layout(mat)
 
 #TRAIL B
 plotsidebyside(namef[1], namef[5], "WS", "WS","SP", "SP", c(-0.1,1),  c(1.8,6.6),
-	"",
+	"3a. Walking speed (WS)",
 	"", 
 	"previous phys", "phys", pch2 = pchs[1], ltys = ltys[1], lwds = 1, col2 = cols[1],
 	axis1 = F,cexlab = cl, cexpt = cp, caxis = ca)
@@ -115,10 +115,10 @@ plot(1, 1, type = "n", xlab ="", ylab = "", axes = F)
 	
 
 	
-par(mar = c(5,7,1,1))		
+par(mar = c(5,7,2,1))		
 plotsidebyside(namef[1], namef[5], "WS", "WS","SP", "SP", c(-0.1,1), c(1.8,6.6),
 	"",
-	"", 
+	"3b. Short physical performance battery (SPPB)", 
 	"previous phys", "phys", pch2 = pchs[5], plot2 = T, ltys = ltys[4], lwds = 1,
 	col2 = cols[4], axis1 = T,cexlab = cl, cexpt = cp, caxis = ca, axis2 = T)	
 		mtext(expression(atop("Change in SPPB at visit t") ,"for increase in SPPB at visit t-1"), 
@@ -174,17 +174,17 @@ pdf("Figure2_ARC_submitAJE_r2.pdf", height = 7, width = 11)
 cleg <- 1.2
 
 ### TMT-B
-par(mfrow = c(2, 2), mar = c(2, 7, 3, 2), oma = c(0, 0, 0, 0 ))
+par(mfrow = c(2, 2), mar = c(2.5, 7, 3, 2), oma = c(0, 0, 0, 0 ))
 
 plotsidebyside(namef[5], namef[1],  "TB", "TB","TB", "TB", c(-0.1,1), c(1.5,6.5),
-	"a. TMT-B",
-	"", 
+	"",
+	"2a. Trail Making Test, Part B (TMT-B)", 
 	"previous cog", "cog",  pch2 = pchs[1], ltys = ltys[1], lwds = 1, col2 = cols[1],
 	cexlab = cl, cexpt = cp, caxis = ca, axis1 = F, plot2 = T, axis2 = T)
 		
 plotsidebyside(namef[1], namef[5],  "TB", "TB","TB", "TB",c(0.2,.8), c(1.5,6.5),
 	"",
-	"b. HVL-imm", 
+	"", 
 	"previous cog", "cog", pch2 = pchs[5], plot = FALSE,plot2 = T, 
 	seqs = seq(2.2, 6.2),
 	col2 = cols[4], ltys = ltys[4],cexlab = cl, cexpt = cp, caxis = ca, lwds = 1)
@@ -208,10 +208,10 @@ legend("bottomleft", title = "Models",
 # HVL-imm
 #####		
 
-par(mar = c(2, 2, 3, 7))		
+par(mar = c(2.5, 2, 3, 7))		
 plotsidebyside(namef[6], namef[2],  "HV", "HV","HV", "HV", c(-0.1,1), c(1.5,6.5),
-	"a. TMT-B",
-	"", 
+	"",
+	"2b. Hopkins Verbal Learning Test,\nimmediate recall (HVLT-imm)", 
 	"previous cog", "cog", pch2 = pchs[2], plot2 = TRUE, ltys = ltys[2], lwds = 1,
 	col2 = cols[2],cexlab = cl, cexpt = cp, caxis = ca, axis1 = F)		
 	
@@ -221,8 +221,8 @@ mtext(expression(atop("Change in HVLT-imm at visit t") ,"for increase in HVLT-im
 		
 	
 plotsidebyside(namef[2], namef[6],  "HV", "HV","HV", "HV", c(0.2,.8), c(1.5,6.5),
-	"a. TMT-B",
-	"b. HVL-imm", 
+	"",
+	"", 
 	"previous cog", "cog",  pch2 = pchs[6], plot = FALSE, seqs = seq(2.2, 6.2),
 	col2 = cols[5], plot2 = TRUE, ltys = ltys[5],cexlab = cl, cexpt = cp, caxis = ca,
 	lwds = 1)	
@@ -238,12 +238,12 @@ legend("bottomleft", title= "Models",
 	
 		
 ####
-# HVL-imm
+# HVL-del
 #####	
-par(mar = c(5,7,0,2))	
+par(mar = c(5,7,0.5,2))	
 plotsidebyside(namef[7], namef[3], "SH", "SH","SH", "SH", c(-0.1,1), c(1.5,6.5),
-	"a. TMT-B",
-	"", 
+	"",
+	"2c.  Hopkins Verbal Learning Test,\ndelayed recall (HVL-del)", 
 	"previous cog", "cog", pch2 = pchs[3], ltys = ltys[3], lwds = 1,
 	col2 = cols[3],cexlab = cl, cexpt = cp, caxis = ca, plot2 = T, axis2= T)	
 	
@@ -256,8 +256,8 @@ plotsidebyside(namef[7], namef[3], "SH", "SH","SH", "SH", c(-0.1,1), c(1.5,6.5),
 	
 	
 plotsidebyside(namef[3], namef[7],  "SH", "SH","SH", "SH",  c(0.2,.8), c(1.5,6.5),
-	"a. TMT-B",
-	"b. HVL-imm", 
+	"",
+	"", 
 	"previous cog", "cog",  pch2 = pchs[7], plot = FALSE, seqs = seq(2.2, 6.2),
 	col2 = cols[6], plot2 = TRUE, ltys = ltys[6],
 	cexlab = cl, cexpt = cp, caxis = ca, lwds = 1)	
@@ -270,12 +270,12 @@ legend("bottomleft", title = "Models", col = cols[c(3, 6)], lty = ltys[c(3, 6)],
 
 		
 ####
-# HVL-imm
+# MMSE
 #####
-par(mar = c(5,2,0,7))	
+par(mar = c(5,2,0.5,7))	
 plotsidebyside(namef[8], namef[4], "MM", "MM","MM", "MM", c(-0.1,1), c(1.5,6.5),
-	"a. TMT-B",
-	"", 
+	"",
+	"2d. Mini-Mental State Examination (MMSE)", 
 	"previous cog", "cog", pch2 = pchs[4], plot2 = TRUE, ltys = ltys[7], lwds = 1,
 	col2 = cols[7],cexlab = cl, cexpt = cp, caxis = ca )	
 	
@@ -283,8 +283,8 @@ plotsidebyside(namef[8], namef[4], "MM", "MM","MM", "MM", c(-0.1,1), c(1.5,6.5),
 			side = 2, line = 0.5, cex = cm, outer = F)
 		
 plotsidebyside(namef[4], namef[8], "MM", "MM","MM", "MM",  c(0.2,.8), c(1.5,6.5),
-	"a. TMT-B",
-	"b. HVL-imm", 
+	"",
+	"", 
 	"previous cog", "cog",  pch2 = pchs[8], plot = FALSE, seqs = seq(2.2, 6.2),
 	col2 = cols[8], plot2 = TRUE, ltys = ltys[8],
 	cexlab = cl, cexpt = cp, caxis = ca, lwds = 1)	
