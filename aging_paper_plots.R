@@ -3,6 +3,8 @@
 
 
 home.dir <- "/Users/jennakrall/Dropbox/Aging/"
+home.dir <- "C:/Users/jrkrall/Dropbox/Aging"
+
 moddir <- file.path(home.dir, "final_models")
 setwd(file.path(home.dir, "plots"))
 
