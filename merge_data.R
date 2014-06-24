@@ -4,7 +4,7 @@ library(foreign)
 
 
 dat.dir <- "/Users/jennakrall/Dropbox/Aging/final_models/data"
-
+dat.dir <- "C:/Users/jrkrall/Dropbox/Aging/final_models/data"
 
 olddat <- read.table(file.path(dat.dir, "olddat/hvl_alllcovar_19jan13.dat"), na.strings = "999")
 
@@ -356,3 +356,15 @@ save(sd1, file = file.path(dat.dir, "all_sds.RData"))
 # all.equal(merged$disease, olddat[, 52])
 # all.equal(merged$gds, as.numeric(as.character(olddat[, 53])))
 # all.equal(merged$gdsc, as.numeric(as.character(olddat[, 54])))
+
+
+
+#check years of data
+library(foreign)
+dat <- read.dta(file.path(dat.dir, "mstat7_w2.dta"))
+dates <- c(paste0("r", seq(1, 7), "date"), "lastdate", "r1cedate", "lcondate")
+dat <- dat[, dates]
+apply(dat, 2, min, na.rm = T)
+apply(dat, 2, max, na.rm = T)
+#1994 is earliest date
+#last r7 date-- 2009?  last r6 date, 2006
