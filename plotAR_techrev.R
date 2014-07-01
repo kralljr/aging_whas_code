@@ -26,7 +26,7 @@ getpars <- function(name1, typey, typex){
 plotAR <- function(typeAR, ylims, labs,
                    pch2 = 17, ltys = 1, lwds = 1.5, caxis = 1.5, 
                    cexpt = 2,
-                  cexlab = 1.5) {
+                  cexlab = 1.5, legcor, xlims =  c(0.25, 5.75)) {
   par(oma=c(1, 2, 1, 1)) 
   par(mar=c(5,4.5,4,2) + 0.1)   
   ltys1 <- c(1, 3, 5, 1, 3, 5, 4, 4)
@@ -65,19 +65,19 @@ plotAR <- function(typeAR, ylims, labs,
   
   seqs <- seq(1, 5)
   par(bty = "l")
-  plot(1, 1, xlim = c(0.75, 5.25), ylim = ylims, 
+  plot(1, 1, xlim = xlims, ylim = ylims, 
        pch=pch2, main = "", ylab = "",
        cex.lab = cexlab, cex = cexpt, cex.axis = caxis, 
        type = "n", las = 1, bty = "l", xaxt = "n",
-       xlab = "")
+       xlab = "", xaxs = "i", yaxs = "i")
   mtext("Visit", side = 1, at = 3, cex = caxis,
         line = 3)
   if(label != "HVLT-del") {
     
-    mtext(bquote(Change~"in"~.(label)~at~visit~italic(t)),  
+    mtext(bquote(Change~"in"~.(label)~at~Visit~italic(t)),  
           side = 2, cex = caxis, line = 4)
   }else{
-    mtext(expression("Change in "* "HVLT-del"^"2" * " at visit " *italic(t)), 
+    mtext(expression("Change in "* "HVLT-del"^"2" * " at Visit " *italic(t)), 
           side = 2, cex = caxis, line = 4)
     
   }
@@ -105,42 +105,59 @@ plotAR <- function(typeAR, ylims, labs,
   }
   
   
-  legs <- c("WS/TMT-B (i)", "WS/HVLT-imm (iii)", 
-            "WS/HVLT-del (v)", "WS/MMSE (vii)",
-            "SPPB/TMT-B (ii)", "SPPB/HVLT-imm (iv)", 
-            "SPPB/HVLT-del (vi)", "SPPB/MMSE (viii)")
-  legend("bottom", legs[keeps], cex = caxis , pch = pchs,
+  legs <- c("WS/TMT-B", "WS/HVLT-imm", 
+            "WS/HVLT-del", "WS/MMSE",
+            "SPPB/TMT-B", "SPPB/HVLT-imm", 
+            "SPPB/HVLT-del", "SPPB/MMSE")
+  legend(legcor[1], legcor[2], legs[keeps], cex = caxis , pch = pchs,
          lty = ltys, lwd = lwds)
   
 }
 
 
-ylims <- c(-0.1, 1)
+ylims <- c(0, 1)
+legcor1 <- c(3.4, 0.325)
+xlims1 <-  c(0.25, 6.2)
 
+
+
+setwd("C:/Users/jrkrall/Dropbox/Aging/proposal/writeup/AJE_techreview/Figurespdf")
 
 pdf("Figure3a.pdf", height = 7, width = 8)
-plotAR("WS", c(-0.1,1), labs = c("A)"))
+plotAR("WS", ylims, labs = c("A)"), legcor = legcor1, xlims = xlims1)
 graphics.off()
 
 pdf("Figure3b.pdf", height = 7, width = 8)
-plotAR("SP", c(-0.1, 1), labs = c("B)"))
+plotAR("SP", ylims, labs = c("B)"), legcor = legcor1, xlims = xlims1)
 graphics.off()
 
 
+
+
+legcor2 <- c(1.9, 0.2)
 
 pdf("Figure2a.pdf", height = 7, width = 8)
-plotAR("TB", c(-0.1,1), labs = c("A)"))
+plotAR("TB", ylims, labs = c("A)"), legcor = legcor2)
 graphics.off()
 
+
+legcor2 <- c(1.725, 0.2)
+
+
 pdf("Figure2b.pdf", height = 7, width = 8)
-plotAR("HVLR", c(-0.1, 1), labs = c("B)"))
+plotAR("HVLR", ylims, labs = c("B)"), legcor = legcor2)
 graphics.off()
+
+legcor2 <- c(1.775, 0.2)
+
 
 
 pdf("Figure2c.pdf", height = 7, width = 8)
-plotAR("HVLD", c(-0.1,1), labs = c("C)"))
+plotAR("HVLD", ylims, labs = c("C)"), legcor = legcor2)
 graphics.off()
 
+legcor2 <- c(1.95, 0.2)
+
 pdf("Figure2d.pdf", height = 7, width = 8)
-plotAR("MM", c(-0.1, 1), labs = c("D)"))
+plotAR("MM", ylims, labs = c("D)"), legcor = legcor2)
 graphics.off()
